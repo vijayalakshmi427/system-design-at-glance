@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Cheat Sheet: Patterns & Problem Identification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+            color: #1e293b;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        nav a {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #06b6d4;
+        }
+
+        nav a.active {
+            color: #06b6d4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 3rem 2rem;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        h1, h2, h3, h4 {
+            color: #0f172a;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.75rem;
+            margin-top: 2.5rem;
+            color: #0f172a;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            margin-top: 1.25rem;
+            color: #475569;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        ol {
+            list-style-type: decimal;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: #475569;
+        }
+
+        code {
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            background-color: #f1f5f9;
+            padding: 0.2em 0.4em;
+            border-radius: 0.3em;
+            color: #0891b2;
+        }
+
+        pre {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-divider {
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .back-to-top {
+            display: block;
+            text-align: right;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #0891b2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-to-top:hover {
+            text-decoration: underline;
+            color: #06b6d4;
+        }
+
+        .pattern-section, .clues-section-item {
+            padding: 1.5rem;
+            background-color: #f8fafc;
+            border-left: 4px solid #0891b2;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .pattern-section strong, .clues-section-item strong {
+            color: #0f172a;
+        }
+
+        .clues-list {
+            background-color: #f0f9ff;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            color: #475569;
+        }
+
+        .general-hints {
+            background-color: #fef3c7;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            color: #78350f;
+            border: 1px solid #fbbf24;
+        }
+
+        .general-hints strong {
+            color: #92400e;
+        }
+
+        .toc-section {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #0891b2;
+        }
+
+        .toc-section h2 {
+            border-bottom: none;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .toc-list {
+            margin-left: 0;
+            list-style: none;
+        }
+
+        .toc-list > li {
+            margin-bottom: 1rem;
+        }
+
+        .toc-list li a {
+            color: #0891b2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc-list li a:hover {
+            text-decoration: underline;
+            color: #06b6d4;
+        }
+
+        .toc-sublist {
+            list-style-type: circle;
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-sublist li a {
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body id="top">
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="system_design_cheat_sheet.html">System Design</a></li>
+            <li><a href="coding_patterns.html" class="active">Coding Patterns</a></li>
+            <li><a href="coding_questions.html">Practice Problems</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>DSA Cheat Sheet: Patterns & Problem Identification</h1>
+        <p style="text-align: center; font-size: 1.125rem; margin-bottom: 2rem;">A quick reference guide for recognizing and solving common Data Structures & Algorithms patterns.</p>
+
+        <!-- Table of Contents -->
+        <div class="toc-section">
+            <h2>Table of Contents</h2>
+            <ul class="toc-list">
+                <li><a href="#patterns-explained" style="font-weight: 600;">I. DSA Patterns Explained</a>
+                    <ul class="toc-sublist">
+                        <li><a href="#pattern-two-pointers">Two Pointers</a></li>
+                        <li><a href="#pattern-sliding-window">Sliding Window</a></li>
+                        <li><a href="#pattern-prefix-sum">Prefix Sum</a></li>
+                        <li><a href="#pattern-hash-map-set">Hash Map / Set</a></li>
+                        <li><a href="#pattern-stack-queue">Stack & Queue</a></li>
+                        <li><a href="#pattern-linked-list-fast-slow">Linked List: Fast & Slow Pointers</a></li>
+                        <li><a href="#pattern-trie">Trie (Prefix Tree)</a></li>
+                        <li><a href="#pattern-heap-priority-queue">Heap (Priority Queue)</a></li>
+                        <li><a href="#pattern-dfs">Depth-First Search (DFS)</a></li>
+                        <li><a href="#pattern-bfs">Breadth-First Search (BFS)</a></li>
+                        <li><a href="#pattern-binary-search">Binary Search</a></li>
+                        <li><a href="#pattern-dynamic-programming">Dynamic Programming</a></li>
+                        <li><a href="#pattern-greedy">Greedy Algorithms</a></li>
+                        <li><a href="#pattern-backtracking">Backtracking</a></li>
+                    </ul>
+                </li>
+                <li><a href="#identifying-patterns" style="font-weight: 600;">II. Identifying Patterns from Problem Statements (Clues)</a>
+                    <ul class="toc-sublist">
+                        <li><a href="#clues-two-pointers">Two Pointers Clues</a></li>
+                        <li><a href="#clues-sliding-window">Sliding Window Clues</a></li>
+                        <li><a href="#clues-prefix-sum">Prefix Sum Clues</a></li>
+                        <li><a href="#clues-hash-map-set">Hash Map / Set Clues</a></li>
+                        <li><a href="#clues-stack-queue">Stack & Queue Clues</a></li>
+                        <li><a href="#clues-linked-list-fast-slow">Linked List: Fast & Slow Pointers Clues</a></li>
+                        <li><a href="#clues-trie">Trie (Prefix Tree) Clues</a></li>
+                        <li><a href="#clues-heap-priority-queue">Heap (Priority Queue) Clues</a></li>
+                        <li><a href="#clues-dfs">Depth-First Search (DFS) Clues</a></li>
+                        <li><a href="#clues-bfs">Breadth-First Search (BFS) Clues</a></li>
+                        <li><a href="#clues-binary-search">Binary Search Clues</a></li>
+                        <li><a href="#clues-dynamic-programming">Dynamic Programming Clues</a></li>
+                        <li><a href="#clues-greedy">Greedy Algorithms Clues</a></li>
+                        <li><a href="#clues-backtracking">Backtracking Clues</a></li>
+                    </ul>
+                </li>
+                <li><a href="#general-dsa-hints">III. General DSA Test Hints</a>
+                    <ul class="toc-sublist">
+                        <li><a href="#brute-force-hints">How to Approach Brute Force</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- I. DSA Patterns Explained -->
+        <section id="patterns-explained">
+            <h2>I. DSA Patterns Explained</h2>
+
+            <div id="pattern-two-pointers" class="pattern-section">
+                <h3>Two Pointers</h3>
+                <p><strong>Description:</strong> Using two pointers (e.g., <code>left</code> and <code>right</code>) to traverse an array or string. Pointers can move in the same direction or opposite directions. This often helps reduce time complexity from quadratic to linear.</p>
+                <h4>General Approach:</h4>
+                <ol>
+                    <li>Initialize <code>left = 0</code> (or start) and <code>right = array.length - 1</code> (or end), or <code>left = 0</code> and <code>right = 1</code> depending on problem.</li>
+                    <li>Loop while pointers meet specific conditions (e.g., <code>left < right</code>, <code>right < array.length</code>).</li>
+                    <li>Inside the loop, move pointers based on comparison or condition.</li>
+                    <li>Update result or perform in-place modification.</li>
+                </ol>
+                <pre><code class="language-javascript">// Example: Check if string is palindrome
+function isPalindrome(s) {
+    let left = 0;
+    let right = s.length - 1;
+    while (left < right) {
+        if (s[left] !== s[right]) {
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-sliding-window" class="pattern-section">
+                <h3>Sliding Window</h3>
+                <p><strong>Description:</strong> Used on arrays or strings to find a subarray/substring that satisfies a condition, often optimizing problems that would otherwise require nested loops. It involves maintaining a "window" of elements and moving it across the data.</p>
+                <h4>General Approach:</h4>
+                <ol>
+                    <li>Initialize <code>left = 0</code> (start of window), <code>currentSum/count = 0</code>, <code>result = 0/Infinity</code>.</li>
+                    <li>Loop <code>right</code> from <code>0</code> to <code>array.length - 1</code> (expand window).
+                        <ul>
+                            <li>Add <code>array[right]</code> to <code>currentSum/count</code>.</li>
+                            <li>While <code>currentSum/count</code> violates a condition (or window size is fixed):
+                                <ul>
+                                    <li>Subtract <code>array[left]</code> from <code>currentSum/count</code> (shrink window).</li>
+                                    <li>Increment <code>left</code>.</li>
+                                </ul>
+                            </li>
+                            <li>Update <code>result</code> with current window properties (e.g., `max/min length`, `max/min sum`).</li>
+                        </ul>
+                    </li>
+                    <li>Return <code>result</code>.</li>
+                </ol>
+                <pre><code class="language-javascript">// Example: Max sum subarray of size K
+function maxSubarraySum(arr, k) {
+    let maxSum = 0;
+    let windowSum = 0;
+    let windowStart = 0;
+
+    for (let windowEnd = 0; windowEnd < arr.length; windowEnd++) {
+        windowSum += arr[windowEnd]; // Expand window
+        if (windowEnd >= k - 1) { // Window size reached
+            maxSum = Math.max(maxSum, windowSum);
+            windowSum -= arr[windowStart]; // Shrink window
+            windowStart++;
+        }
+    }
+    return maxSum;
+}</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-prefix-sum" class="pattern-section">
+                <h3>Prefix Sum</h3>
+                <p><strong>Description:</strong> Precomputing sums of elements up to each index in an array (or matrix) to quickly find the sum of any subarray/range in $O(1)$ time. This avoids re-calculating sums for every query.</p>
+                <h4>General Approach:</h4>
+                <ol>
+                    <li>Create a `prefixSum` array where `prefixSum[i]` stores the sum of elements from index 0 to `i-1`. (Or `prefixSum[i]` stores sum up to `i`, depending on problem definition).</li>
+                    <li>Calculate `prefixSum` array: `prefixSum[i] = prefixSum[i-1] + arr[i-1]`.</li>
+                    <li>To find sum of `arr[i...j]`: `prefixSum[j+1] - prefixSum[i]`.</li>
+                </ol>
+                <pre><code class="language-javascript">// Example: Calculate prefix sums
+function getPrefixSums(arr) {
+    let prefixSums = new Array(arr.length + 1).fill(0);
+    for (let i = 0; i < arr.length; i++) {
+        prefixSums[i + 1] = prefixSums[i] + arr[i];
+    }
+    return prefixSums;
+}
+// Sum of arr[i...j] is prefixSums[j+1] - prefixSums[i]</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-hash-map-set" class="pattern-section">
+                <h3>Hash Map / Set</h3>
+                <p><strong>Description:</strong> Using hash-based data structures (objects/Maps/Sets) for efficient $O(1)$ average time lookups, insertions, and deletions. They provide quick access to data based on a key.</p>
+                <h4>General Approach:</h4>
+                <ol>
+                    <li>Choose `Map` for key-value pairs (e.g., frequency counting, custom mappings) or `Set` for storing unique elements (e.g., checking for existence, removing duplicates).</li>
+                    <li>Iterate through the input data.</li>
+                    <li>Store elements or their properties in the hash structure.</li>
+                    <li>Use `has()`, `get()`, `set()`, `delete()` methods for efficient operations.</li>
+                </ol>
+                <pre><code class="language-javascript">// Example: Two Sum
+function twoSum(nums, target) {
+    const numMap = new Map(); // Stores number -> index
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        if (numMap.has(complement)) {
+            return [numMap.get(complement), i];
+        }
+        numMap.set(nums[i], i);
+    }
+    return [];
+}</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-stack-queue" class="pattern-section">
+                <h3>Stack & Queue</h3>
+                <p><strong>Description:</strong>
+                    <ul>
+                        <li><strong>Stack (LIFO - Last In, First Out):</strong> Elements are added and removed from the same end (the "top"). Think of a stack of plates.</li>
+                        <li><strong>Queue (FIFO - First In, First Out):</strong> Elements are added at one end (the "rear") and removed from the other end (the "front"). Think of a line at a store.</li>
+                    </ul>
+                </p>
+                <h4>General Approach (Stack):</h4>
+                <ol>
+                    <li>Initialize an empty stack (e.g., using a JavaScript array and `push`/`pop`).</li>
+                    <li>Iterate through the input.</li>
+                    <li>If an "opening" or relevant element is encountered, `push` it onto the stack.</li>
+                    <li>If a "closing" or processing element is encountered, `pop` from the stack and perform necessary checks/operations.</li>
+                    <li>Check the final state of the stack at the end of processing.</li>
+                </ol>
+                <pre><code class="language-javascript">// Example: Valid Parentheses (Stack)
+function isValid(s) {
+    const stack = [];
+    const map = { '(': ')', '[': ']', '{': '}' };
+    for (let char of s) {
+        if (map[char]) { // If it's an opening bracket
+            stack.push(char);
+        } else { // If it's a closing bracket
+            if (stack.length === 0 || map[stack.pop()] !== char) {
+                return false;
+            }
+        }
+    }
+    return stack.length === 0;
+}</code></pre>
+                <h4>General Approach (Queue):</h4>
+                <ol>
+                    <li>Initialize an empty queue (e.g., using a JavaScript array and `push`/`shift`).</li>
+                    <li>Add starting elements to the queue.</li>
+                    <li>Loop while the queue is not empty.</li>
+                    <li>`Dequeue` an element, process it, and `enqueue` its neighbors/next elements.</li>
+                </ol>
+                <pre><code class="language-javascript">// Example: Basic BFS (for graph traversal)
+function bfs(startNode) {
+    const queue = [startNode];
+    const visited = new Set();
+    visited.add(startNode);
+
+    while (queue.length > 0) {
+        const node = queue.shift(); // Dequeue
+        // Process node (e.g., print node.value)
+        
+        for (let neighbor of node.neighbors) { // Assuming node has a 'neighbors' array
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                queue.push(neighbor); // Enqueue
+            }
+        }
+    }
+}</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-linked-list-fast-slow" class="pattern-section">
+                <h3>Linked List: Fast & Slow Pointers</h3>
+                <p><strong>Description:</strong> Using two pointers that traverse a linked list (or sometimes an array/sequence) at different speeds (e.g., one moves one step at a time, the other two steps). This is effective for problems where you need to find relative positions or detect cycles.</p>
+                <h4>General Approach:</h4>
+                <ol>
+                    <li>Initialize `slow = head`, `fast = head` (or `head.next` depending on problem).</li>
+                    <li>Loop while `fast` and `fast.next` exist (adjust termination condition based on goal).</li>
+                    <li>Move `slow` by 1 step (`slow = slow.next`).</li>
+                    <li>Move `fast` by 2 steps (`fast = fast.next.next`).</li>
+                    <li>Check conditions (e.g., `slow === fast` for cycle detection, or `fast.next === null` for middle).</li>
+                </ol>
+                <pre><code class="language-javascript">// Example: Detect Cycle in Linked List
+function hasCycle(head) {
+    if (!head || !head.next) return false; // Need at least two nodes for a cycle
+    let slow = head;
+    let fast = head.next; // Start fast one step ahead
+
+    while (slow !== fast) {
+        if (!fast || !fast.next) { // If fast reaches end, no cycle
+            return false;
+        }
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return true; // Cycle detected
+}</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-trie" class="pattern-section">
+                <h3>Trie (Prefix Tree)</h3>
+                <p><strong>Description:</strong> A tree-like data structure used to store a dynamic set of strings, where nodes represent characters and paths from the root represent prefixes. It's highly optimized for prefix-based searches and string operations.</p>
+                <h4>General Approach:</h4>
+                <ol>
+                    <li>Define a `TrieNode` class (or object structure) with `children` (a map/object of char to TrieNode) and an `isEndOfWord` boolean flag.</li>
+                    <li>Implement `insert(word)`: Traverse/create nodes for each character, marking `isEndOfWord` at the end.</li>
+                    <li>Implement `search(word)`: Traverse, return true if path exists and `isEndOfWord` is true.</li>
+                    <li>Implement `startsWith(prefix)`: Traverse, return true if path exists.</li>
+                    <li>Build the Trie by inserting all relevant strings (e.g., a dictionary of words).</li>
+                    <li>Query the Trie based on problem requirements (e.g., finding shortest matching prefix).</li>
+                </ol>
+                <pre><code class="language-javascript">// Basic TrieNode structure
+class TrieNode {
+    constructor() {
+        this.children = {}; // Map of char -> TrieNode
+        this.isEndOfWord = false;
+    }
+}
+// (Insert/Search methods would be added to a Trie class that holds the root node)</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-heap-priority-queue" class="pattern-section">
+                <h3>Heap (Priority Queue)</h3>
+                <p><strong>Description:</strong> A specialized tree-based data structure that satisfies the heap property: parent nodes are always greater than or equal to (Max Heap) or less than or equal to (Min Heap) their children. This structure enables efficient extraction of the minimum or maximum element ($O(1)$ peek, $O(\log N)$ extract/insert).</p>
+                <h4>General Approach:</h4>
+                <ol>
+                    <li>Choose Min-Heap or Max-Heap based on whether you need the smallest or largest element to be easily accessible.</li>
+                    <li>Insert elements into the heap.</li>
+                    <li>Repeatedly extract elements based on priority (e.g., extract min for smallest K elements, or extract max for largest K elements).</li>
+                </ol>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- III. Tree & Graph Patterns -->
+        <section id="tree-graph-patterns">
+            <h2>III. Tree & Graph Patterns</h2>
+
+            <div id="pattern-dfs" class="pattern-section">
+                <h3>Depth-First Search (DFS)</h3>
+                <p><strong>Description:</strong> Traverses a graph or tree by exploring as far as possible along each branch before backtracking. It goes deep into one path before exploring other branches. Typically implemented with recursion (which uses the call stack) or an explicit stack data structure.</p>
+                <h4>General Approach (Recursive):</h4>
+                <pre><code class="language-javascript">function dfs(node, visited, target) {
+    // Base Case 1: If node already visited in current path (prevents cycles in undirected graphs)
+    if (visited.has(node)) return false;
+    visited.add(node); // Mark current node as visited
+
+    // Base Case 2: If target found
+    if (node === target) return true;
+
+    // Recursive Step: Explore neighbors
+    for (let neighbor of node.neighbors) { // Assuming graph nodes have a 'neighbors' property
+        if (dfs(neighbor, visited, target)) {
+            return true; // If target found in any child branch, propagate true upwards
+        }
+    }
+    // Backtrack (if needed for state changes, like in Word Search)
+    // visited.delete(node); // Uncomment if problem requires backtracking on visited state
+    return false; // Target not found in this branch
+}</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-bfs" class="pattern-section">
+                <h3>Breadth-First Search (BFS)</h3>
+                <p><strong>Description:</strong> Traverses a graph or tree level by level. It explores all neighbors at the current depth before moving on to nodes at the next depth level. Typically implemented with a queue.</p>
+                <h4>General Approach:</h4>
+                <pre><code class="language-javascript">function bfs(startNode, target) {
+    const queue = [{ node: startNode, distance: 0 }]; // Store node and its distance/level
+    const visited = new Set();
+    visited.add(startNode);
+
+    while (queue.length > 0) {
+        const { node, distance } = queue.shift(); // Dequeue
+        
+        if (node === target) return distance; // Target found, return distance/level
+
+        for (let neighbor of node.neighbors) { // Assuming node has a 'neighbors' array
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                queue.push({ node: neighbor, distance: distance + 1 }); // Enqueue with incremented distance
+            }
+        }
+    }
+    return -1; // Target not reachable
+}</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- IV. Algorithmic Paradigms -->
+        <section id="algorithmic-paradigms">
+            <h2>IV. Algorithmic Paradigms</h2>
+
+            <div id="pattern-binary-search" class="pattern-section">
+                <h3>Binary Search</h3>
+                <p><strong>Description:</strong> An efficient algorithm for finding an item from a sorted list of items by repeatedly dividing the search interval in half. It works by comparing the target value to the middle element of the array.</p>
+                <h4>General Approach:</h4>
+                <ol>
+                    <li>Initialize `low = 0`, `high = array.length - 1`.</li>
+                    <li>Loop while `low <= high`.</li>
+                    <li>Calculate `mid = low + Math.floor((high - low) / 2)`.</li>
+                    <li>Compare `array[mid]` with target:
+                        <ul>
+                            <li>If `array[mid] === target`, return `mid`.</li>
+                            <li>If `array[mid] < target`, move `low = mid + 1` (search right half).</li>
+                            <li>If `array[mid] > target`, move `high = mid - 1` (search left half).</li>
+                        </ul>
+                    </li>
+                    <li>Return -1 (not found) or `low` (insertion point, depending on variation).</li>
+                </ol>
+                <pre><code class="language-javascript">// Example: Standard Binary Search
+function binarySearch(arr, target) {
+    let low = 0;
+    let high = arr.length - 1;
+    while (low <= high) {
+        let mid = low + Math.floor((high - low) / 2);
+        if (arr[mid] === target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1;
+}</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-dynamic-programming" class="pattern-section">
+                <h3>Dynamic Programming (DP)</h3>
+                <p><strong>Description:</strong> Solving complex problems by breaking them down into simpler, overlapping subproblems and storing the results of these subproblems (memoization or tabulation) to avoid redundant calculations. It's about optimizing recursive solutions.</p>
+                <h4>General Approach:</h4>
+                <ol>
+                    <li><strong>Identify overlapping subproblems:</strong> Can you break the problem into smaller, identical subproblems that repeat?</li>
+                    <li><strong>Identify optimal substructure:</strong> Does an optimal solution to the overall problem depend on optimal solutions to its subproblems?</li>
+                    <li><strong>Define a recurrence relation:</strong> How does the solution to a problem `dp[i]` (or `dp[i][j]`) depend on previously solved subproblems?</li>
+                    <li><strong>Base cases:</strong> What are the smallest, trivial solutions that can be solved directly?</li>
+                    <li><strong>Memoization (Top-down):</strong> Implement a recursive solution and cache the results of subproblems.</li>
+                    <li><strong>Tabulation (Bottom-up):</strong> Implement an iterative solution that fills up a DP table (1D or 2D array) from base cases upwards.</li>
+                </ol>
+                <pre><code class="language-javascript">// Example: Fibonacci (Tabulation)
+function fib(n) {
+    if (n <= 1) return n;
+    const dp = new Array(n + 1);
+    dp[0] = 0;
+    dp[1] = 1;
+    for (let i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+}</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-greedy" class="pattern-section">
+                <h3>Greedy Algorithms</h3>
+                <p><strong>Description:</strong> Making the locally optimal choice at each step with the hope that this sequence of local optimal choices will lead to a globally optimal solution. This strategy does not always work, and often requires proof of correctness.</p>
+                <h4>General Approach:</h4>
+                <ol>
+                    <li>Identify the "greedy choice property": Can a global optimum be reached by making a locally optimal choice?</li>
+                    <li>Identify "optimal substructure": Does an optimal solution to the problem contain optimal solutions to subproblems?</li>
+                    <li>Sort the input if order helps in making greedy choices.</li>
+                    <li>Iterate and make the "best" local choice at each step, adding it to the result and updating the remaining problem state.</li>
+                </ol>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="pattern-backtracking" class="pattern-section">
+                <h3>Backtracking</h3>
+                <p><strong>Description:</strong> A refined brute-force approach used to explore all possible solutions to a problem. It builds a solution incrementally, and if a partial solution cannot lead to a valid complete solution, it "backs up" (undoes the last choice) and tries another path. Often implemented using recursion.</p>
+                <h4>General Approach:</h4>
+                <pre><code class="language-javascript">// Pseudo-code structure for Backtracking
+function backtrack(combination, candidates, results) {
+    // 1. Base Case: If a complete solution is found
+    if (isSolution(combination)) {
+        results.push([...combination]); // Add a copy of the solution
+        return;
+    }
+
+    // 2. Explore choices
+    for (let i = 0; i &lt; candidates.length; i++) { // Or iterate through available choices
+        let choice = candidates[i];
+        
+        // Pruning: Check if the current choice can lead to a valid solution
+        if (isValid(choice, combination)) { 
+            // 3. Make choice
+            combination.push(choice);
+            // (Optionally: adjust candidates for next recursion, e.g., candidates.slice(i+1))
+
+            // 4. Recurse
+            backtrack(combination, candidates, results);
+
+            // 5. Unmake choice (backtrack): Restore state for next iteration
+            combination.pop();
+            // (Optionally: restore candidates if they were modified)
+        }
+    }
+}</code></pre>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- II. Identifying Patterns from Problem Statements (Clues) -->
+        <section id="identifying-patterns">
+            <h2>II. Identifying Patterns from Problem Statements (Clues)</h2>
+
+            <div id="clues-two-pointers" class="clues-section-item">
+                <h3>Two Pointers Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "sorted array", "in-place", "remove duplicates", "find pairs/triplets with sum X", "reverse string/array".</li>
+                        <li><strong>Problem asks for:</strong> Comparing elements at two different positions, modifying array/string without extra space, finding specific elements in sorted data.</li>
+                        <li><strong>Data Structure:</strong> Often arrays or strings.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-sliding-window" class="clues-section-item">
+                <h3>Sliding Window Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "subarray", "substring", "contiguous", "longest/shortest subarray/substring with X property", "max sum of subarray of size K", "distinct characters".</li>
+                        <li><strong>Problem asks for:</strong> Finding a range (subarray/substring) that satisfies a condition.</li>
+                        <li><strong>Data Structure:</strong> Arrays or strings.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-prefix-sum" class="clues-section-item">
+                <h3>Prefix Sum Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "sum of subarray/submatrix", "range sum queries", "number of subarrays with sum X", "even/odd sums".</li>
+                        <li><strong>Problem asks for:</strong> Repeatedly calculating sums over different ranges.</li>
+                        <li><strong>Data Structure:</strong> Arrays or matrices.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-hash-map-set" class="clues-section-item">
+                <h3>Hash Map / Set Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "distinct", "unique", "frequency", "count occurrences", "mapping", "contains", "is present", "pair sum", "cycle detection" (in sequences).</li>
+                        <li><strong>Problem asks for:</strong> Tracking counts, checking for element existence quickly, storing relationships between items, eliminating duplicates.</li>
+                        <li><strong>Data Structure:</strong> Any data that needs quick lookups or uniqueness checks.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-stack-queue" class="clues-section-item">
+                <h3>Stack & Queue Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Stack Keywords:</strong> "valid parentheses", "balanced symbols", "reverse order", "undo operations", "next greater/smaller element", "syntax parsing", "function call order".</li>
+                        <li><strong>Queue Keywords:</strong> "level-order traversal" (BFS), "task scheduling", "printer queue", "shortest path on unweighted graphs", "first-in, first-out processing".</li>
+                        <li><strong>Problem asks for:</strong> Processing elements in a specific order (LIFO/FIFO), managing nested structures, shortest path on unweighted graphs.</li>
+                        <li><strong>Data Structure:</strong> Often strings (for parentheses), arrays (for next greater), graphs/trees (for traversals).</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-linked-list-fast-slow" class="clues-section-item">
+                <h3>Linked List: Fast & Slow Pointers Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "linked list cycle", "find middle node", "Nth node from end", "intersection of two linked lists".</li>
+                        <li><strong>Problem asks for:</strong> Detecting loops, finding specific nodes relative to the end or middle, or comparing positions in linked lists without knowing total length.</li>
+                        <li><strong>Data Structure:</strong> Linked Lists (explicitly).</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-trie" class="clues-section-item">
+                <h3>Trie (Prefix Tree) Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "prefix search", "autocomplete", "spell checker", "dictionary of words", "shortest/longest common prefix", "word search with roots/derivatives".</li>
+                        <li><strong>Problem asks for:</strong> Efficiently storing and searching strings based on their prefixes, finding words with common prefixes.</li>
+                        <li><strong>Data Structure:</strong> Collections of strings.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-heap-priority-queue" class="clues-section-item">
+                <h3>Heap (Priority Queue) Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "K-th largest/smallest element", "top K elements", "priority queue", "merge K sorted lists/arrays", "scheduling tasks by priority".</li>
+                        <li><strong>Problem asks for:</strong> Efficiently retrieving the minimum or maximum element from a collection, maintaining a sorted order of a subset of elements.</li>
+                        <li><strong>Data Structure:</strong> Collections of numbers or objects with priorities.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-dfs" class="clues-section-item">
+                <h3>Depth-First Search (DFS) Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "all paths", "explore every branch", "connectivity", "reachability", "cycle detection" (in directed graphs), "topological sort", "backtracking problems" (DFS is the core mechanism).</li>
+                        <li><strong>Problem asks for:</strong> Exploring all possible paths, finding if a path exists, traversing all nodes in a connected component, problems on trees (pre/in/post-order traversals).</li>
+                        <li><strong>Data Structure:</strong> Graphs, Trees, Grids/Matrices (as implicit graphs).</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-bfs" class="clues-section-item">
+                <h3>Breadth-First Search (BFS) Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "shortest path on unweighted graphs", "minimum steps", "level by level traversal", "nearest element", "all nodes at a certain distance".</li>
+                        <li><strong>Problem asks for:</strong> Finding the shortest path (in terms of number of edges/steps) in an unweighted graph, exploring nodes layer by layer.</li>
+                        <li><strong>Data Structure:</strong> Graphs, Trees, Grids/Matrices.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-binary-search" class="clues-section-item">
+                <h3>Binary Search Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "sorted array/list", "find element", "first/last occurrence", "square root", "find peak", "search space is sorted", "minimum possible X", "maximum possible Y" (where X/Y has a monotonic property - "Binary Search on Answer").</li>
+                        <li><strong>Problem asks for:</strong> Efficiently searching in sorted data, or finding an optimal value within a monotonic range.</li>
+                        <li><strong>Data Structure:</strong> Sorted arrays, or a search space that can be sorted/has a monotonic property.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-dynamic-programming" class="clues-section-item">
+                <h3>Dynamic Programming (DP) Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "Minimum/Maximum", "Longest/Shortest", "Count ways", "number of ways", "can you reach X", "longest common subsequence/substring", "knapsack".</li>
+                        <li><strong>Problem asks for:</strong> Optimization (min/max), counting, or existence, where the solution can be built from solutions to smaller, *overlapping* subproblems, and there's an *optimal substructure*.</li>
+                        <li><strong>Data Structure:</strong> Often involves a 1D or 2D array/table to store intermediate results.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-greedy" class="clues-section-item">
+                <h3>Greedy Algorithms Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "maximize profit", "minimize cost", "smallest number of items", "activity selection", "coin change" (sometimes greedy, sometimes DP depending on constraints).</li>
+                        <li><strong>Problem asks for:</strong> Making a sequence of locally optimal choices to achieve a global optimum.</li>
+                        <li><strong>Check:</strong> Does making the best choice *now* always lead to the best overall solution? (Requires proof or intuition).</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <div id="clues-backtracking" class="clues-section-item">
+                <h3>Backtracking Clues</h3>
+                <div class="clues-list">
+                    <ul>
+                        <li><strong>Keywords:</strong> "all possible arrangements", "find all combinations/permutations", "generate all subsets", "solve a puzzle" (e.g., Sudoku, N-Queens), "find if path exists by trying all options".</li>
+                        <li><strong>Problem asks for:</strong> Exploring all possible decision paths, generating all valid solutions, or finding if *any* solution exists under complex constraints by trial and error.</li>
+                        <li><strong>Data Structure:</strong> Often recursive, using a temporary list/array to build the current solution.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- III. General DSA Test Hints -->
+        <section id="general-dsa-hints">
+            <h2>III. General DSA Test Hints</h2>
+            <div class="general-hints">
+                <ul>
+                    <li><strong>Read the Problem Carefully:</strong>
+                        <ul>
+                            <li>Understand input/output format, constraints (N size, value range, time/memory limits).</li>
+                            <li>Pay attention to edge cases (empty input, single element, max/min values).</li>
+                            <li>Clarify ambiguities with the interviewer.</li>
+                        </ul>
+                    </li>
+                    <li><strong id="brute-force-hints">How to Approach Brute Force:</strong>
+                        <ul>
+                            <li><strong>Purpose:</strong> A brute-force solution is your first step if you're stuck. It clarifies the problem, helps you understand constraints, and provides a baseline for correctness (and later, optimization).</li>
+                            <li><strong>Strategy:</strong>
+                                <ul>
+                                    <li><strong>Try all possibilities:</strong> If you need to find something, try every single way to find it.</li>
+                                    <li><strong>Nested loops:</strong> Often involves multiple nested loops (e.g., $O(N^2)$, $O(N^3)$) to check all pairs, triplets, or combinations.</li>
+                                    <li><strong>Recursion without memoization:</strong> For problems with choices, a simple recursive solution that explores all branches without storing results.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Example:</strong> For "Two Sum", brute force is two nested loops checking every pair. For "Longest Substring without Repeating Characters", brute force is checking every possible substring.</li>
+                            <li><strong>Don't optimize prematurely:</strong> Get the brute force working correctly first.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Think about Time & Space Complexity:</strong>
+                        <ul>
+                            <li>Always analyze your solution's complexity. $O(N^2)$ vs $O(N \log N)$ vs $O(N)$ vs $O(1)$.</li>
+                            <li>Mention trade-offs (e.g., "I'm using $O(N)$ space for $O(1)$ lookup speed").</li>
+                        </ul>
+                    </li>
+                    <li><strong>Draw Diagrams:</strong>
+                        <ul>
+                            <li>For Linked Lists, Trees, Graphs, or array manipulations. Visualizing helps immensely!</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test with Examples:</strong>
+                        <ul>
+                            <li>Walk through your algorithm with small custom examples and given examples.</li>
+                            <li>Check edge cases (empty, single element, full capacity).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Break Down Complex Problems:</strong>
+                        <ul>
+                            <li>If a problem looks daunting, try to identify smaller, solvable subproblems.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Master Core Data Structures:</strong>
+                        <ul>
+                            <li><strong>Arrays:</strong> $O(1)$ access, $O(N)$ insert/delete (unless at end). Fixed size.</li>
+                            <li><strong>Linked Lists:</strong> $O(1)$ insert/delete (if node known), $O(N)$ access. Dynamic size.</li>
+                            <li><strong>Hash Tables (Maps/Sets):</strong> $O(1)$ average time for insert, delete, lookup. $O(N)$ worst case (collisions).</li>
+                            <li><strong>Stacks/Queues:</strong> $O(1)$ push/pop/peek.</li>
+                            <li><strong>Trees (Binary Search Trees):</strong> $O(\log N)$ average for search, insert, delete. $O(N)$ worst case (skewed tree).</li>
+                            <li><strong>Heaps (Priority Queues):</strong> $O(\log N)$ for insert/delete min/max. $O(1)$ peek.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Practice, Practice, Practice:</strong>
+                        <ul>
+                            <li>The more problems you solve, the better you get at pattern recognition.</li>
+                            <li>Don't just solve, understand *why* a particular solution is optimal.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Talk Through Your Thought Process:</strong>
+                        <ul>
+                            <li>Explain your assumptions, alternative ideas, and why you chose a particular approach.</li>
+                            <li>Communicate if you get stuck or change your mind.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <a href="#top" class="back-to-top">Back to Top</a>
+        </section>
+
+    </div>
+</body>
+</html>

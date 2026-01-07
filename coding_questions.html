@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Problems & Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+            color: #1e293b;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        nav a {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #06b6d4;
+        }
+
+        nav a.active {
+            color: #06b6d4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 3rem 2rem;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        h1, h2, h3 {
+            color: #0f172a;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.75rem;
+            margin-top: 2.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+
+        pre {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        code {
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            background-color: #f1f5f9;
+            padding: 0.2em 0.4em;
+            border-radius: 0.3em;
+            color: #0891b2;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        ol {
+            list-style-type: decimal;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: #475569;
+        }
+
+        .section-divider {
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .back-to-top {
+            display: block;
+            text-align: right;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #0891b2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-to-top:hover {
+            text-decoration: underline;
+            color: #06b6d4;
+        }
+
+        .problem-description {
+            background-color: #f8fafc;
+            border-left: 4px solid #0891b2;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
+            font-style: italic;
+            color: #475569;
+        }
+
+        .core-idea {
+            font-weight: 600;
+            color: #0891b2;
+        }
+
+        .complexity-analysis {
+            background-color: #f0f9ff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: #0c4a6e;
+            border: 1px solid #e0f2fe;
+        }
+
+        .complexity-analysis strong {
+            color: #075985;
+        }
+
+        .toc-section {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #0891b2;
+        }
+
+        .toc-section h2 {
+            border-bottom: none;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .toc-section > ul {
+            margin-left: 0;
+            list-style: none;
+        }
+
+        .toc-section > ul > li {
+            margin-bottom: 1rem;
+        }
+
+        .toc-section a {
+            color: #0891b2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc-section a:hover {
+            text-decoration: underline;
+            color: #06b6d4;
+        }
+
+        .toc-sublist {
+            list-style-type: circle;
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-sublist li {
+            margin-bottom: 0.25rem;
+        }
+
+        .toc-sublist a {
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body id="top">
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="system_design_cheat_sheet.html">System Design</a></li>
+            <li><a href="coding_patterns.html">Coding Patterns</a></li>
+            <li><a href="coding_questions.html" class="active">Practice Problems</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Coding Problems & Solutions</h1>
+
+        <!-- Index -->
+        <div class="toc-section">
+            <h2>Table of Contents</h2>
+            <ul>
+                <li>
+                    <a href="#string-manipulation" style="font-weight: 600;">I. String Manipulation & Pattern Matching</a>
+                    <ul class="toc-sublist">
+                        <li><a href="#longest-common-prefix">Longest Common Prefix</a></li>
+                        <li><a href="#reverse-words">Reverse Words in a String</a></li>
+                        <li><a href="#str-str">Find the Index of the First Occurrence in a String (`strStr`)</a></li>
+                        <li><a href="#ransom-note">Ransom Note</a></li>
+                        <li><a href="#find-the-difference">Find the Difference</a></li>
+                        <li><a href="#keyboard-row">Keyboard Row</a></li>
+                        <li><a href="#isomorphic-strings">Isomorphic Strings</a></li>
+                        <li><a href="#word-pattern">Word Pattern</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#array-sliding-window" style="font-weight: 600;">II. Array & Sliding Window Techniques</a>
+                    <ul class="toc-sublist">
+                        <li><a href="#min-subarray-sum">Minimum Size Subarray Sum</a></li>
+                        <li><a href="#height-checker">Height Checker</a></li>
+                        <li><a href="#array-intersection">Intersection of Two Arrays</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#data-structures" style="font-weight: 600;">III. Data Structures & Their Applications</a>
+                    <ul class="toc-sublist">
+                        <li><a href="#valid-parentheses">Valid Parentheses</a></li>
+                        <li><a href="#design-hashmap">Design HashMap</a></li>
+                        <li><a href="#replace-words">Replace Words</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#linked-lists" style="font-weight: 600;">IV. Linked Lists</a>
+                    <ul class="toc-sublist">
+                        <li><a href="#add-two-numbers">Add Two Numbers (Linked List)</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#mathematical-conversion" style="font-weight: 600;">V. Mathematical & Conversion Problems</a>
+                    <ul class="toc-sublist">
+                        <li><a href="#happy-number">Happy Number</a></li>
+                        <li><a href="#roman-to-integer">Roman to Integer</a></li>
+                        <li><a href="#integer-to-roman">Integer to Roman</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#matrix-traversal" style="font-weight: 600;">VI. Matrix & Grid Traversal</a>
+                    <ul class="toc-sublist">
+                        <li><a href="#spiral-matrix">Spiral Matrix</a></li>
+                        <li><a href="#word-search">Word Search</a></li>
+                        <li><a href="#find-duplicate-file">Find Duplicate File in System</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- I. String Manipulation & Pattern Matching -->
+        <section id="string-manipulation" class="mb-8">
+            <h2 class="text-blue-600">I. String Manipulation & Pattern Matching</h2>
+
+            <!-- Longest Common Prefix -->
+            <div id="longest-common-prefix" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Longest Common Prefix</h3>
+                <p class="problem-description">Find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string "".</p>
+                <p class="core-idea"><strong>Core Idea: Vertical Scan (Character by Character Comparison)</strong></p>
+                <p>The most intuitive and efficient approach is to compare the strings character by character, from left to right. We assume the first string is our initial candidate for the common prefix, and then we verify this prefix against all other strings.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Handle Edge Cases:</strong> If the input array is empty, return `""`. If it contains only one string, return that string.</li>
+                    <li><strong>Iterate Vertically (Character by Character):</strong> Use the first string (`strs[0]`) as a reference. Loop `charIndex` from `0` up to `strs[0].length - 1`.</li>
+                    <li><strong>Compare Across All Strings (Inner Loop):</strong> For each `charIndex`, iterate `strIndex` from `1` to `strs.length - 1`.
+                        <ul>
+                            <li><strong>Check for End of String or Mismatch:</strong> If `charIndex` is equal to `strs[strIndex].length` (current string is shorter) OR `strs[strIndex][charIndex]` is not equal to `strs[0][charIndex]` (mismatch), then the common prefix ends here. Return `strs[0].substring(0, charIndex)`.</li>
+                        </ul>
+                    </li>
+                    <li><strong>All Characters Matched:</strong> If the outer loop completes, `strs[0]` itself is the longest common prefix. Return `strs[0]`.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {string[]} strs
+ * @return {string}
+ */
+function longestCommonPrefix(strs) {
+    if (strs.length === 0) {
+        return "";
+    }
+    if (strs.length === 1) {
+        return strs[0];
+    }
+
+    for (let charIndex = 0; charIndex < strs[0].length; charIndex++) {
+        const currentChar = strs[0][charIndex];
+
+        for (let strIndex = 1; strIndex < strs.length; strIndex++) {
+            if (charIndex === strs[strIndex].length || strs[strIndex][charIndex] !== currentChar) {
+                return strs[0].substring(0, charIndex);
+            }
+        }
+    }
+    return strs[0];
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(N \cdot L_{min})$ where $N$ is the number of strings and $L_{min}$ is the length of the shortest string.</li>
+                        <li><strong>Space Complexity:</strong> $O(1)$ auxiliary space.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Reverse Words in a String -->
+            <div id="reverse-words" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Reverse Words in a String</h3>
+                <p class="problem-description">Given an input string `s`, reverse the order of the words. Words are separated by at least one space. Return a string of words in reverse order concatenated by a single space, with no extra spaces.</p>
+                <p class="core-idea"><strong>Core Idea: Split, Filter, Reverse, Join</strong></p>
+                <p>The most straightforward way is to split the string into words, filter out empty strings, reverse the array of words, and then join them back.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Split the string into words:</strong> Use `s.split(/\s+/)` to split by one or more whitespace characters. This handles multiple spaces and trims leading/trailing spaces automatically.</li>
+                    <li><strong>Reverse the order of words:</strong> Use `words.reverse()`.</li>
+                    <li><strong>Join the words back into a single string:</strong> Use `words.join(' ')`.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {string} s
+ * @return {string}
+ */
+function reverseWords(s) {
+    const words = s.split(/\s+/);
+    words.reverse();
+    return words.join(' ');
+}</code></pre>
+                <p class="core-idea"><strong>Alternative Core Idea: Two-Pointer Approach (More "In-Place")</strong></p>
+                <p>This method involves cleaning spaces, reversing the entire character array, then reversing each word individually.</p>
+                <h4>Algorithm Steps (Two-Pointer):</h4>
+                <ol>
+                    <li><strong>Clean up spaces:</strong> Create a helper `cleanSpaces(s)` to return a character array with single spaces between words and no leading/trailing spaces.</li>
+                    <li><strong>Reverse the entire string:</strong> Use a `reverseCharRange(arr, start, end)` helper to reverse the entire `charArray`.</li>
+                    <li><strong>Reverse each word:</strong> Iterate through the `charArray`, identify each word (sequence of non-space characters), and use `reverseCharRange` to reverse each word in place.</li>
+                    <li><strong>Join and return:</strong> Convert the `charArray` back to a string.</li>
+                </ol>
+                <h4>JavaScript Code (Two-Pointer):</h4>
+                <pre><code>/**
+ * Helper function to clean up spaces:
+ * - Removes leading/trailing spaces.
+ * - Reduces multiple spaces between words to a single space.
+ * @param {string} s - The input string.
+ * @returns {character[]} - A character array with cleaned spaces.
+ */
+function cleanSpaces(s) {
+    let left = 0;
+    let right = s.length - 1;
+
+    while (left <= right && s[left] === ' ') {
+        left++;
+    }
+    while (left <= right && s[right] === ' ') {
+        right--;
+    }
+
+    const charArray = [];
+    for (let i = left; i <= right; i++) {
+        if (s[i] !== ' ') {
+            charArray.push(s[i]);
+        } else if (charArray.length > 0 && charArray[charArray.length - 1] !== ' ') {
+            charArray.push(' ');
+        }
+    }
+    return charArray;
+}
+
+/**
+ * Helper function to reverse characters within a specified range in an array in-place.
+ * @param {character[]} arr - The character array.
+ * @param {number} start - The starting index of the range (inclusive).
+ * @param {number} end - The ending index of the range (inclusive).
+ */
+function reverseCharRange(arr, start, end) {
+    while (start &lt; end) {
+        [arr[start], arr[end]] = [arr[end], arr[start]];
+        start++;
+        end--;
+    }
+}
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+function reverseWordsTwoPointer(s) {
+    const charArray = cleanSpaces(s);
+    if (charArray.length === 0) {
+        return "";
+    }
+
+    reverseCharRange(charArray, 0, charArray.length - 1);
+
+    let wordStart = 0;
+    while (wordStart &lt; charArray.length) {
+        let wordEnd = wordStart;
+        while (wordEnd &lt; charArray.length && charArray[wordEnd] !== ' ') {
+            wordEnd++;
+        }
+        reverseCharRange(charArray, wordStart, wordEnd - 1);
+        wordStart = wordEnd + 1;
+    }
+    return charArray.join('');
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis (Both approaches):</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(L)$ where $L$ is the length of the input string.</li>
+                        <li><strong>Space Complexity:</strong> $O(L)$ for storing the intermediate array of characters/words.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Find the Index of the First Occurrence in a String (strStr) -->
+            <div id="str-str" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Find the Index of the First Occurrence in a String (`strStr`)</h3>
+                <p class="problem-description">Given two strings `needle` and `haystack`, return the index of the first occurrence of `needle` in `haystack`, or `-1` if `needle` is not part of `haystack`.</p>
+                <p class="core-idea"><strong>Core Idea: Brute-Force (Window Sliding and Comparison)</strong></p>
+                <p>Slide a window of `needle`'s length across `haystack` and compare the substring within that window to `needle`.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Handle Edge Cases:</strong> If `needle` is empty, return `0`. If `haystack` is shorter than `needle`, return `-1`.</li>
+                    <li><strong>Iterate Through `haystack` (Outer Loop):</strong> Use `i` for potential starting positions from `0` up to `haystack.length - needle.length`.</li>
+                    <li><strong>Compare Substring (Inner Loop):</strong> For each `i`, use `j` from `0` to `needle.length - 1`. Compare `haystack[i + j]` with `needle[j]`. If a mismatch, `break` inner loop.</li>
+                    <li><strong>Found Match:</strong> If inner loop completes, return `i`.</li>
+                    <li><strong>No Match:</strong> If outer loop completes, return `-1`.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {string} haystack
+ * @param {string} needle
+ * @return {number}
+ */
+function strStr(haystack, needle) {
+    if (needle.length === 0) {
+        return 0;
+    }
+    if (haystack.length &lt; needle.length) {
+        return -1;
+    }
+
+    for (let i = 0; i &lt;= haystack.length - needle.length; i++) {
+        let match = true;
+        for (let j = 0; j &lt; needle.length; j++) {
+            if (haystack[i + j] !== needle[j]) {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
+            return i;
+        }
+    }
+    return -1;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O((H-N+1) \cdot N)$ or $O(H \cdot N)$ in worst case, where $H$ is `haystack.length` and $N$ is `needle.length`.</li>
+                        <li><strong>Space Complexity:</strong> $O(1)$.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Ransom Note -->
+            <div id="ransom-note" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Ransom Note</h3>
+                <p class="problem-description">Given two strings `ransomNote` and `magazine`, return `true` if `ransomNote` can be constructed by using the letters from `magazine` and `false` otherwise. Each letter in `magazine` can only be used once in `ransomNote`.</p>
+                <p class="core-idea"><strong>Core Idea: Character Frequency Counting</strong></p>
+                <p>Count character frequencies in `magazine`, then "consume" them while iterating through `ransomNote`. Order does not matter.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Initial Length Check:</strong> If `ransomNote.length > magazine.length`, return `false`.</li>
+                    <li><strong>Build Frequency Map for `magazine`:</strong> Store counts of each character.</li>
+                    <li><strong>Decrement Counts Using `ransomNote`:</strong> Iterate through `ransomNote`. For each character, decrement its count in the map. If a character is not found or its count is 0, return `false`.</li>
+                    <li><strong>Return `true`:</strong> If loop completes, `ransomNote` can be constructed.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {string} ransomNote
+ * @param {string} magazine
+ * @return {boolean}
+ */
+function canConstruct(ransomNote, magazine) {
+    if (ransomNote.length > magazine.length) { // Optimization
+        return false;
+    }
+    const magazineFreqMap = new Map();
+    for (const char of magazine) {
+        magazineFreqMap.set(char, (magazineFreqMap.get(char) || 0) + 1);
+    }
+
+    for (const charOfNote of ransomNote) {
+        if (!magazineFreqMap.has(charOfNote) || magazineFreqMap.get(charOfNote) === 0) {
+            return false;
+        }
+        magazineFreqMap.set(charOfNote, magazineFreqMap.get(charOfNote) - 1);
+    }
+    return true;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(M + R)$ where $M$ is `magazine.length` and $R$ is `ransomNote.length`.</li>
+                        <li><strong>Space Complexity:</strong> $O(A)$ where $A$ is the alphabet size (constant, e.g., 26).</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Find the Difference -->
+            <div id="find-the-difference" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Find the Difference</h3>
+                <p class="problem-description">Given two strings `s` and `t`. String `t` is generated by random shuffling string `s` and then add one more letter at a random position. Return the letter that was added to `t`.</p>
+                <p class="core-idea"><strong>Core Idea: Bitwise XOR</strong></p>
+                <p>XORing all character codes in `s` and `t` will cancel out common characters, leaving only the added one.</p>
+                <h4>Algorithm Steps (XOR):</h4>
+                <ol>
+                    <li>Initialize `charCodeSum = 0`.</li>
+                    <li>XOR `charCodeSum` with ASCII value of each char in `s`.</li>
+                    <li>XOR `charCodeSum` with ASCII value of each char in `t`.</li>
+                    <li>Convert final `charCodeSum` back to a character.</li>
+                </ol>
+                <h4>JavaScript Code (XOR):</h4>
+                <pre><code>/**
+ * @param {string} s
+ * @param {string} t
+ * @return {character}
+ */
+function findTheDifference(s, t) {
+    let charCodeSum = 0;
+    for (let i = 0; i &lt; s.length; i++) {
+        charCodeSum ^= s.charCodeAt(i);
+    }
+    for (let i = 0; i &lt; t.length; i++) {
+        charCodeSum ^= t.charCodeAt(i);
+    }
+    return String.fromCharCode(charCodeSum);
+}</code></pre>
+                <p class="core-idea"><strong>Alternative Core Idea: Frequency Map</strong></p>
+                <p>Count frequencies in `s`, then decrement using `t`. The character that causes a count to go to zero or negative is the added one.</p>
+                <h4>JavaScript Code (Frequency Map):</h4>
+                <pre><code>/**
+ * @param {string} s
+ * @param {string} t
+ * @return {character}
+ */
+function findTheDifferenceMap(s, t) {
+    const charCounts = new Map();
+    for (const char of s) {
+        charCounts.set(char, (charCounts.get(char) || 0) + 1);
+    }
+    for (const char of t) {
+        if (!charCounts.has(char) || charCounts.get(char) === 0) {
+            return char;
+        }
+        charCounts.set(char, charCounts.get(char) - 1);
+    }
+    return ''; // Should not be reached
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis (Both approaches):</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(N)$ where $N$ is the length of the longer string.</li>
+                        <li><strong>Space Complexity:</strong> $O(1)$ for XOR, $O(A)$ (alphabet size) for Frequency Map, which is effectively $O(1)$.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Keyboard Row -->
+            <div id="keyboard-row" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Keyboard Row</h3>
+                <p class="problem-description">Given an array of strings `words`, return the words that can be typed using letters of the alphabet on only one row of American keyboard. Case-insensitive.</p>
+                <p class="core-idea"><strong>Core Idea: Pre-map Characters to Rows and Validate Each Word</strong></p>
+                <p>Create a map from characters to their keyboard row. Then, for each word, check if all its characters belong to the same row.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Create a Character-to-Row Map:</strong> Map lowercase 'q' to 1, 'a' to 2, 'z' to 3, etc.</li>
+                    <li><strong>Iterate Through `words` Array:</strong> For each `word`:
+                        <ul>
+                            <li>Convert `word` to lowercase.</li>
+                            <li>Determine `expectedRow` from its first character.</li>
+                            <li>Validate remaining characters: If any character's row doesn't match `expectedRow`, mark word as invalid and `break`.</li>
+                            <li>If valid, add original `word` to result.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Return `resultWords`.</strong></li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {string[]} words
+ * @return {string[]}
+ */
+function findWords(words) {
+    const resultWords = [];
+    const charToRowMap = new Map();
+
+    "qwertyuiop".split('').forEach(char => charToRowMap.set(char, 1));
+    "asdfghjkl".split('').forEach(char => charToRowMap.set(char, 2));
+    "zxcvbnm".split('').forEach(char => charToRowMap.set(char, 3));
+
+    for (const word of words) {
+        if (word.length === 0) continue;
+
+        const lowerCaseWord = word.toLowerCase();
+        const expectedRow = charToRowMap.get(lowerCaseWord[0]);
+        if (expectedRow === undefined) continue; // Should not happen with letter inputs
+
+        let isValidWord = true;
+        for (let i = 1; i &lt; lowerCaseWord.length; i++) {
+            const char = lowerCaseWord[i];
+            const actualRow = charToRowMap.get(char);
+            if (actualRow !== expectedRow) {
+                isValidWord = false;
+                break;
+            }
+        }
+        if (isValidWord) {
+            resultWords.push(word);
+        }
+    }
+    return resultWords;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(L)$ where $L$ is the total number of characters across all words.</li>
+                        <li><strong>Space Complexity:</strong> $O(1)$ (for the fixed-size character-to-row map).</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Isomorphic Strings -->
+            <div id="isomorphic-strings" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Isomorphic Strings</h3>
+                <p class="problem-description">Given two strings `s` and `t`, determine if they are isomorphic. Isomorphic means characters in `s` can be replaced to get `t`, preserving order, with consistent and unique mappings.</p>
+                <p class="core-idea"><strong>Core Idea: Using Two Hash Maps for Bi-directional Mapping</strong></p>
+                <p>Use two maps: `sToTMap` (s char to t char) and `tToSMap` (t char to s char) to ensure both consistency and uniqueness of mappings.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Initial Check:</strong> If `s.length !== t.length`, return `false`.</li>
+                    <li><strong>Initialize Maps:</strong> `sToTMap = new Map()`, `tToSMap = new Map()`.</li>
+                    <li><strong>Iterate and Map:</strong> Loop `i` from `0` to `s.length - 1`.
+                        <ul>
+                            <li>Get `sChar = s[i]`, `tChar = t[i]`.</li>
+                            <li>If `sToTMap.has(sChar)`: Check `sToTMap.get(sChar) === tChar`. If not, return `false`.</li>
+                            <li>Else (`sChar` is new): Check `tToSMap.has(tChar)`. If true, return `false` (violates unique mapping). Else, set `sToTMap.set(sChar, tChar)` and `tToSMap.set(tChar, sChar)`.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Return `true`:</strong> If loop completes.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+function isIsomorphic(s, t) {
+    if (s.length !== t.length) {
+        return false;
+    }
+
+    const sToTMap = new Map();
+    const tToSMap = new Map();
+
+    for (let i = 0; i &lt; s.length; i++) {
+        const sChar = s[i];
+        const tChar = t[i];
+
+        if (sToTMap.has(sChar)) {
+            if (sToTMap.get(sChar) !== tChar) {
+                return false;
+            }
+        } else {
+            if (tToSMap.has(tChar)) {
+                return false;
+            }
+            sToTMap.set(sChar, tChar);
+            tToSMap.set(tChar, sChar);
+        }
+    }
+    return true;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(L)$ where $L$ is the length of the strings.</li>
+                        <li><strong>Space Complexity:</strong> $O(A)$ where $A$ is the alphabet size (constant, e.g., 26).</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Word Pattern -->
+            <div id="word-pattern" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Word Pattern</h3>
+                <p class="problem-description">Given a `pattern` and a string `s`, find if `s` follows the same pattern. A bijection must exist between a letter in `pattern` and a non-empty word in `s`.</p>
+                <p class="core-idea"><strong>Core Idea: Using Two Hash Maps for Bi-directional Mapping (Char to Word)</strong></p>
+                <p>Similar to Isomorphic Strings, but mapping characters to words. Use `charToWord` and `wordToChar` maps.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Split `s` into words.</strong></li>
+                    <li><strong>Initial Length Check:</strong> If `pattern.length !== words.length`, return `false`.</li>
+                    <li><strong>Initialize Maps:</strong> `charToWord = new Map()`, `wordToChar = new Map()`.</li>
+                    <li><strong>Iterate and Validate:</strong> Loop `i` from `0` to `pattern.length - 1`.
+                        <ul>
+                            <li>Get `pChar = pattern[i]`, `currentWord = words[i]`.</li>
+                            <li>If `charToWord.has(pChar)`: Check `charToWord.get(pChar) === currentWord`. If not, return `false`.</li>
+                            <li>Else (`pChar` is new): Check `wordToChar.has(currentWord)`. If true, return `false`. Else, set `charToWord.set(pChar, currentWord)` and `wordToChar.set(currentWord, pChar)`.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Return `true`:</strong> If loop completes.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {string} pattern
+ * @param {string} s
+ * @return {boolean}
+ */
+function wordPattern(pattern, s) {
+    const words = s.split(' ');
+    if (pattern.length !== words.length) {
+        return false;
+    }
+
+    const charToWord = new Map();
+    const wordToChar = new Map();
+
+    for (let i = 0; i &lt; pattern.length; i++) {
+        const pChar = pattern[i];
+        const currentWord = words[i];
+
+        if (charToWord.has(pChar)) {
+            if (charToWord.get(pChar) !== currentWord) {
+                return false;
+            }
+        } else {
+            if (wordToChar.has(currentWord)) {
+                return false;
+            }
+            charToWord.set(pChar, currentWord);
+            wordToChar.set(currentWord, pChar);
+        }
+    }
+    return true;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(L_p + L_s)$ where $L_p$ is `pattern.length` and $L_s$ is `s.length`.</li>
+                        <li><strong>Space Complexity:</strong> $O(A + W)$ where $A$ is alphabet size and $W$ is number of unique words in `s`. Effectively $O(L_s)$ for word storage.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- II. Array & Sliding Window Techniques -->
+        <section id="array-sliding-window" class="mb-8">
+            <h2 class="text-green-600">II. Array & Sliding Window Techniques</h2>
+
+            <!-- Minimum Size Subarray Sum -->
+            <div id="min-subarray-sum" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Minimum Size Subarray Sum</h3>
+                <p class="problem-description">Given an array of positive integers `nums` and a positive integer `target`, return the minimal length of a subarray whose sum is greater than or equal to `target`. If no such subarray, return `0`.</p>
+                <p class="core-idea"><strong>Core Idea: Sliding Window</strong></p>
+                <p>Use two pointers (`left`, `right`) to define a window. Expand the window by moving `right`. When sum meets target, shrink from `left` to find minimum length, updating `minLength` along the way.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Initialize:</strong> `left = 0`, `currentSum = 0`, `minLength = Infinity`.</li>
+                    <li><strong>Expand Window:</strong> Loop `right` from `0` to `nums.length - 1`. Add `nums[right]` to `currentSum`.</li>
+                    <li><strong>Shrink Window:</strong> While `currentSum >= target`:
+                        <ul>
+                            <li>Update `minLength = min(minLength, right - left + 1)`.</li>
+                            <li>Subtract `nums[left]` from `currentSum`.</li>
+                            <li>Increment `left`.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Return:</strong> If `minLength` is `Infinity`, return `0`, else `minLength`.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {number} target
+ * @param {number[]} nums
+ * @return {number}
+ */
+function minSubArrayLen(target, nums) {
+    let left = 0;
+    let currentSum = 0;
+    let minLength = Infinity;
+
+    for (let right = 0; right &lt; nums.length; right++) {
+        currentSum += nums[right];
+
+        while (currentSum >= target) {
+            minLength = Math.min(minLength, right - left + 1);
+            currentSum -= nums[left];
+            left++;
+        }
+    }
+    return minLength === Infinity ? 0 : minLength;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(N)$ where $N$ is the length of `nums`.</li>
+                        <li><strong>Space Complexity:</strong> $O(1)$.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Height Checker -->
+            <div id="height-checker" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Height Checker</h3>
+                <p class="problem-description">Given `heights` (current order) and `expected` (sorted order), return the number of indices where `heights[i] != expected[i]`.</p>
+                <p class="core-idea"><strong>Core Idea (Optimal): Counting Sort Principles</strong></p>
+                <p>Leverage the small, fixed range of heights (1-100) to count frequencies and implicitly reconstruct the sorted order without a full sort.</p>
+                <h4>Algorithm Steps (Optimal):</h4>
+                <ol>
+                    <li><strong>Count Frequencies:</strong> Create `heightCounts` array (size 101) and populate it by iterating `heights`.</li>
+                    <li><strong>Compare and Count Mismatches:</strong>
+                        <ul>
+                            <li>Initialize `mismatches = 0`, `currentHeightsIndex = 0`.</li>
+                            <li>Loop `expectedHeight` from `1` to `100`.</li>
+                            <li>While `heightCounts[expectedHeight] > 0`:
+                                <ul>
+                                    <li>If `heights[currentHeightsIndex] !== expectedHeight`, increment `mismatches`.</li>
+                                    <li>Decrement `heightCounts[expectedHeight]`.</li>
+                                    <li>Increment `currentHeightsIndex`.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Return `mismatches`.</strong></li>
+                </ol>
+                <h4>JavaScript Code (Optimal):</h4>
+                <pre><code>/**
+ * @param {number[]} heights
+ * @return {number}
+ */
+function heightCheckerOptimal(heights) {
+    let mismatches = 0;
+    const heightCounts = new Array(101).fill(0);
+    for (const height of heights) {
+        heightCounts[height]++;
+    }
+
+    let currentHeightsIndex = 0;
+    for (let expectedHeight = 1; expectedHeight &lt;= 100; expectedHeight++) {
+        while (heightCounts[expectedHeight] > 0) {
+            if (heights[currentHeightsIndex] !== expectedHeight) {
+                mismatches++;
+            }
+            heightCounts[expectedHeight]--;
+            currentHeightsIndex++;
+        }
+    }
+    return mismatches;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(N + \text{max_height})$ which simplifies to $O(N)$.</li>
+                        <li><strong>Space Complexity:</strong> $O(\text{max_height})$ which simplifies to $O(1)$.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Intersection of Two Arrays -->
+            <div id="array-intersection" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Intersection of Two Arrays</h3>
+                <p class="problem-description">Given two integer arrays `nums1` and `nums2`, return an array of their intersection. Each element in the result must be unique.</p>
+                <p class="core-idea"><strong>Core Idea: Using a Hash Set</strong></p>
+                <p>Convert one array into a hash set for $O(1)$ average time lookups, then iterate through the second array, adding common elements to a result set.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Create a Hash Set from `nums1`:</strong> Add all unique elements of `nums1` to `nums1Set`.</li>
+                    <li><strong>Find Intersections with `nums2`:</strong> Create `intersectionSet`. Iterate `nums2`. If `nums1Set.has(num)`, add `num` to `intersectionSet`.</li>
+                    <li><strong>Convert to Array and Return:</strong> Convert `intersectionSet` to an array.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[]}
+ */
+function intersection(nums1, nums2) {
+    const nums1Set = new Set(nums1);
+    const intersectionSet = new Set();
+
+    for (const num of nums2) {
+        if (nums1Set.has(num)) {
+            intersectionSet.add(num);
+        }
+    }
+    return Array.from(intersectionSet);
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(M + N)$ where $M$ is `nums1.length` and $N$ is `nums2.length`.</li>
+                        <li><strong>Space Complexity:</strong> $O(\min(M, N))$ for the sets.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- III. Data Structures & Their Applications -->
+        <section id="data-structures" class="mb-8">
+            <h2 class="text-purple-600">III. Data Structures & Their Applications</h2>
+
+            <!-- Valid Parentheses -->
+            <div id="valid-parentheses" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Valid Parentheses</h3>
+                <p class="problem-description">Given a string `s` containing just `'(', ')', '{', '}', '['` and `']'`, determine if the input string is valid (brackets closed by same type, in correct order, every close has open).</p>
+                <p class="core-idea"><strong>Core Idea: Using a Stack</strong></p>
+                <p>A stack's LIFO property perfectly matches parenthesis matching: the most recently opened bracket must be the first one closed.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Initialize a Stack:</strong> An empty array.</li>
+                    <li><strong>Define Mappings:</strong> `bracketMap = {'(': ')', '{': '}', '[': ']'}`.</li>
+                    <li><strong>Iterate Through String:</strong> For each `char` in `s`:
+                        <ul>
+                            <li>If `char` is an opening bracket, `push` it onto the stack.</li>
+                            <li>If `char` is a closing bracket:
+                                <ul>
+                                    <li>If stack is empty, return `false`.</li>
+                                    <li>`pop` `lastOpenBracket`. If `bracketMap[lastOpenBracket] !== char`, return `false`.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Final Check:</strong> If stack is empty, return `true`. Else, return `false`.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {string} s
+ * @return {boolean}
+ */
+function isValid(s) {
+    const stack = [];
+    const bracketMap = {
+        '(': ')',
+        '{': '}',
+        '[': ']'
+    };
+
+    for (let i = 0; i &lt; s.length; i++) {
+        const char = s[i];
+        if (bracketMap.hasOwnProperty(char)) {
+            stack.push(char);
+        } else {
+            if (stack.length === 0) {
+                return false;
+            }
+            const lastOpenBracket = stack.pop();
+            if (bracketMap[lastOpenBracket] !== char) {
+                return false;
+            }
+        }
+    }
+    return stack.length === 0;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(N)$ where $N$ is the length of the string.</li>
+                        <li><strong>Space Complexity:</strong> $O(N)$ in worst case (e.g., all opening brackets).</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Design HashMap -->
+            <div id="design-hashmap" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Design HashMap</h3>
+                <p class="problem-description">Implement `MyHashMap` with `put(key, value)`, `get(key)`, `remove(key)` without using built-in hash table libraries.</p>
+                <p class="core-idea"><strong>Core Idea: Separate Chaining with Array of Lists</strong></p>
+                <p>Use an underlying array of "buckets". Each bucket stores a list of `[key, value]` pairs to handle collisions. A simple modulo hash function is used.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>`constructor()`:</strong> Initialize `BUCKET_SIZE` (e.g., 1000) and `buckets` array, filling each with an empty array.</li>
+                    <li><strong>`_hash(key)`:</strong> Private helper `return key % this.BUCKET_SIZE;`.</li>
+                    <li><strong>`put(key, value)`:</strong>
+                        <ul>
+                            <li>Get `index = _hash(key)`.</li>
+                            <li>Iterate `bucket[index]`. If `key` found, update `value` and return.</li>
+                            <li>Else, `push([key, value])` to `bucket[index]`.</li>
+                        </ul>
+                    </li>
+                    <li><strong>`get(key)`:</strong>
+                        <ul>
+                            <li>Get `index = _hash(key)`.</li>
+                            <li>Iterate `bucket[index]`. If `key` found, return `value`.</li>
+                            <li>Else, return `-1`.</li>
+                        </ul>
+                    </li>
+                    <li><strong>`remove(key)`:</strong>
+                        <ul>
+                            <li>Get `index = _hash(key)`.</li>
+                            <li>Iterate `bucket[index]`. If `key` found, `splice(i, 1)` and return.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>class MyHashMap {
+    constructor() {
+        this.BUCKET_SIZE = 1000;
+        this.buckets = new Array(this.BUCKET_SIZE);
+        for (let i = 0; i &lt; this.BUCKET_SIZE; i++) {
+            this.buckets[i] = [];
+        }
+    }
+
+    _hash(key) {
+        return key % this.BUCKET_SIZE;
+    }
+
+    put(key, value) {
+        const index = this._hash(key);
+        const bucket = this.buckets[index];
+
+        for (let i = 0; i &lt; bucket.length; i++) {
+            const pair = bucket[i];
+            if (pair[0] === key) {
+                pair[1] = value;
+                return;
+            }
+        }
+        bucket.push([key, value]);
+    }
+
+    get(key) {
+        const index = this._hash(key);
+        const bucket = this.buckets[index];
+
+        for (let i = 0; i &lt; bucket.length; i++) {
+            const pair = bucket[i];
+            if (pair[0] === key) {
+                return pair[1];
+            }
+        }
+        return -1;
+    }
+
+    remove(key) {
+        const index = this._hash(key);
+        const bucket = this.buckets[index];
+
+        for (let i = 0; i &lt; bucket.length; i++) {
+            const pair = bucket[i];
+            if (pair[0] === key) {
+                bucket.splice(i, 1);
+                return;
+            }
+        }
+    }
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity (Average):</strong> $O(1)$ for `put`, `get`, `remove`.</li>
+                        <li><strong>Time Complexity (Worst):</strong> $O(N)$ if all keys collide into one bucket, where $N$ is the number of elements.</li>
+                        <li><strong>Space Complexity:</strong> $O(\text{BUCKET_SIZE} + N)$.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Replace Words -->
+            <div id="replace-words" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Replace Words</h3>
+                <p class="problem-description">Given a `dictionary` of roots and a `sentence`, replace all derivatives in the sentence with the shortest root forming it. Return the sentence after replacement.</p>
+                <p class="core-idea"><strong>Core Idea: Trie (Prefix Tree) for Efficient Root Lookup</strong></p>
+                <p>A Trie allows efficient prefix matching and naturally helps find the shortest root by stopping at the first `isEndOfWord` node encountered during traversal.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Build the Trie:</strong> Insert all `rootWord`s from `dictionary` into a Trie. Mark `isEndOfWord` at the end of each root.</li>
+                    <li><strong>Process the Sentence:</strong> Split `sentence` into `wordsInSentence`.</li>
+                    <li><strong>Replace Derivatives:</strong> For each `word` in `wordsInSentence`:
+                        <ul>
+                            <li>Traverse the Trie character by character using `word`'s prefix.</li>
+                            <li>If `currentNode.isEndOfWord` is `true`, set `foundRoot` to the current prefix and `break` (shortest root found).</li>
+                            <li>If a character is not found in Trie, `break` (no root for this prefix).</li>
+                            <li>Add `foundRoot` (if any) or original `word` to `resultWords`.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Join and Return:</strong> Join `resultWords` with spaces.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>class TrieNode {
+    constructor() {
+        this.children = {};
+        this.isEndOfWord = false;
+    }
+}
+
+/**
+ * @param {string[]} dictionary
+ * @param {string} sentence
+ * @return {string}
+ */
+function replaceWords(dictionary, sentence) {
+    const root = new TrieNode();
+    for (const rootWord of dictionary) {
+        let currentNode = root;
+        for (const char of rootWord) {
+            if (!currentNode.children[char]) {
+                currentNode.children[char] = new TrieNode();
+            }
+            currentNode = currentNode.children[char];
+        }
+        currentNode.isEndOfWord = true;
+    }
+
+    const wordsInSentence = sentence.split(' ');
+    const resultWords = [];
+
+    for (const word of wordsInSentence) {
+        let currentNode = root;
+        let foundRoot = null;
+
+        for (let charIndex = 0; charIndex &lt; word.length; charIndex++) {
+            const char = word[charIndex];
+            if (!currentNode.children[char]) {
+                break;
+            }
+            currentNode = currentNode.children[char];
+            if (currentNode.isEndOfWord) {
+                foundRoot = word.substring(0, charIndex + 1);
+                break;
+            }
+        }
+        if (foundRoot !== null) {
+            resultWords.push(foundRoot);
+        } else {
+            resultWords.push(word);
+        }
+    }
+    return resultWords.join(' ');
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(L_{d\_total} + L_{s\_total})$ where $L_{d\_total}$ is total chars in dictionary and $L_{s\_total}$ is total chars in sentence.</li>
+                        <li><strong>Space Complexity:</strong> $O(L_{d\_total} + L_{s\_total})$ for Trie and result storage.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- IV. Linked Lists -->
+        <section id="linked-lists" class="mb-8">
+            <h2 class="text-red-600">IV. Linked Lists</h2>
+
+            <!-- Add Two Numbers -->
+            <div id="add-two-numbers" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Add Two Numbers (Linked List)</h3>
+                <p class="problem-description">Given two non-empty linked lists representing two non-negative integers (digits in reverse order), add them and return the sum as a linked list.</p>
+                <p class="core-idea"><strong>Core Idea: Iterative Addition with Carry</strong></p>
+                <p>Simulate manual addition by iterating through both lists simultaneously, adding digits and managing a carry-over.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Define `ListNode` Structure:</strong> `val`, `next`.</li>
+                    <li><strong>Initialize:</strong> `dummyHead = new ListNode(0)`, `current = dummyHead`, `carry = 0`.</li>
+                    <li><strong>Traverse and Add:</strong> Loop while `p1 || p2 || carry`.
+                        <ul>
+                            <li>Get `digit1 = p1 ? p1.val : 0`, `digit2 = p2 ? p2.val : 0`.</li>
+                            <li>Calculate `sum = digit1 + digit2 + carry`.</li>
+                            <li>`newDigit = sum % 10`, `carry = Math.floor(sum / 10)`.</li>
+                            <li>`current.next = new ListNode(newDigit)`, `current = current.next`.</li>
+                            <li>Move `p1 = p1.next`, `p2 = p2.next` (if not null).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Return `dummyHead.next`.</strong></li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>// Definition for singly-linked list.
+function ListNode(val, next) {
+    this.val = (val === undefined ? 0 : val);
+    this.next = (next === undefined ? null : next);
+}
+
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+function addTwoNumbers(l1, l2) {
+    const dummyHead = new ListNode(0);
+    let current = dummyHead;
+
+    let p1 = l1;
+    let p2 = l2;
+    let carry = 0;
+
+    while (p1 !== null || p2 !== null || carry !== 0) {
+        const digit1 = p1 ? p1.val : 0;
+        const digit2 = p2 ? p2.val : 0;
+
+        const sum = digit1 + digit2 + carry;
+
+        const newDigit = sum % 10;
+        carry = Math.floor(sum / 10);
+
+        current.next = new ListNode(newDigit);
+        current = current.next;
+
+        if (p1) {
+            p1 = p1.next;
+        }
+        if (p2) {
+            p2 = p2.next;
+        }
+    }
+    return dummyHead.next;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(\max(N_1, N_2))$ where $N_1, N_2$ are lengths of lists.</li>
+                        <li><strong>Space Complexity:</strong> $O(\max(N_1, N_2))$ for the new list.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- V. Mathematical & Conversion Problems -->
+        <section id="mathematical-conversion" class="mb-8">
+            <h2 class="text-yellow-600">V. Mathematical & Conversion Problems</h2>
+
+            <!-- Happy Number -->
+            <div id="happy-number" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Happy Number</h3>
+                <p class="problem-description">Determine if a number `n` is happy. A happy number eventually reaches 1 when repeatedly replaced by the sum of the squares of its digits. Non-happy numbers loop endlessly in a cycle not including 1.</p>
+                <p class="core-idea"><strong>Core Idea: Detecting Cycles (Hash Set)</strong></p>
+                <p>Use a hash set to keep track of numbers encountered. If a number repeats, it's in a cycle and not happy.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Helper `getNext(num)`:</strong> Returns sum of squares of digits.</li>
+                    <li><strong>Main `isHappy(n)`:</strong>
+                        <ul>
+                            <li>Initialize `seenNumbers = new Set()`.</li>
+                            <li>Loop `while (n !== 1 && !seenNumbers.has(n))`:
+                                <ul>
+                                    <li>`seenNumbers.add(n)`.</li>
+                                    <li>`n = getNext(n)`.</li>
+                                </ul>
+                            </li>
+                            <li>Return `n === 1`.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {number} n
+ * @return {boolean}
+ */
+function isHappy(n) {
+    const getNext = (num) => {
+        let totalSum = 0;
+        while (num > 0) {
+            let digit = num % 10;
+            totalSum += digit * digit;
+            num = Math.floor(num / 10);
+        }
+        return totalSum;
+    };
+
+    const seenNumbers = new Set();
+    while (n !== 1 && !seenNumbers.has(n)) {
+        seenNumbers.add(n);
+        n = getNext(n);
+    }
+    return n === 1;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(\log N)$ effectively constant for practical purposes due to bounded cycle lengths.</li>
+                        <li><strong>Space Complexity:</strong> $O(\log N)$ effectively constant for practical purposes due to bounded cycle lengths.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Roman to Integer -->
+            <div id="roman-to-integer" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Roman to Integer</h3>
+                <p class="problem-description">Given a Roman numeral string, convert it to an integer. Handle subtractive forms (IV, IX, XL, XC, CD, CM).</p>
+                <p class="core-idea"><strong>Core Idea: Iterate from Left to Right, Checking for Subtractive Cases</strong></p>
+                <p>Use a value map for symbols. Iterate, if current value is less than next value, subtract; otherwise, add.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Create a Value Map:</strong> `{'I': 1, 'V': 5, ...}`.</li>
+                    <li><strong>Initialize `total = 0`.</strong></li>
+                    <li><strong>Iterate Through String:</strong> Loop `i` from `0` to `s.length - 1`.
+                        <ul>
+                            <li>Get `currentValue = romanValues.get(s[i])`.</li>
+                            <li>Get `nextValue = romanValues.get(s[i+1])` (if `s[i+1]` exists).</li>
+                            <li>If `currentValue < nextValue`, `total -= currentValue`.</li>
+                            <li>Else, `total += currentValue`.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Return `total`.</strong></li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {string} s
+ * @return {number}
+ */
+function romanToInt(s) {
+    const romanValues = new Map([
+        ['I', 1], ['V', 5], ['X', 10], ['L', 50],
+        ['C', 100], ['D', 500], ['M', 1000]
+    ]);
+    let total = 0;
+    for (let i = 0; i &lt; s.length; i++) {
+        const currentValue = romanValues.get(s[i]);
+        const nextValue = (i + 1 &lt; s.length) ? romanValues.get(s[i + 1]) : 0;
+
+        if (currentValue &lt; nextValue) {
+            total -= currentValue;
+        } else {
+            total += currentValue;
+        }
+    }
+    return total;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(L)$ where $L$ is the length of the Roman numeral string.</li>
+                        <li><strong>Space Complexity:</strong> $O(1)$ (for the fixed-size map).</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Integer to Roman -->
+            <div id="integer-to-roman" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Integer to Roman</h3>
+                <p class="problem-description">Given an integer, convert it to a Roman numeral. Follow rules for additive and subtractive forms.</p>
+                <p class="core-idea"><strong>Core Idea: Greedy Approach with Predefined Mappings</strong></p>
+                <p>Use an ordered list of Roman numeral values and symbols (including subtractive forms) from largest to smallest. Greedily subtract the largest possible value from the number.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Create Ordered Mappings:</strong> An array of `{value, symbol}` objects, sorted descending (e.g., `{1000, "M"}, {900, "CM"}, ... {1, "I"}`).</li>
+                    <li><strong>Initialize `romanNumeral = ""`.</strong></li>
+                    <li><strong>Iterate and Subtract:</strong> For each `pair` in `romanMap`:
+                        <ul>
+                            <li>While `num >= pair.value`:
+                                <ul>
+                                    <li>`romanNumeral += pair.symbol`.</li>
+                                    <li>`num -= pair.value`.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Return `romanNumeral`.</strong></li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {number} num
+ * @return {string}
+ */
+function intToRoman(num) {
+    const romanMap = [
+        { value: 1000, symbol: "M" }, { value: 900, symbol: "CM" },
+        { value: 500, symbol: "D" }, { value: 400, symbol: "CD" },
+        { value: 100, symbol: "C" }, { value: 90, symbol: "XC" },
+        { value: 50, symbol: "L" }, { value: 40, symbol: "XL" },
+        { value: 10, symbol: "X" }, { value: 9, symbol: "IX" },
+        { value: 5, symbol: "V" }, { value: 4, symbol: "IV" },
+        { value: 1, symbol: "I" }
+    ];
+    let romanNumeral = "";
+    for (const pair of romanMap) {
+        while (num >= pair.value) {
+            romanNumeral += pair.symbol;
+            num -= pair.value;
+        }
+    }
+    return romanNumeral;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(1)$ (fixed number of operations due to bounded input range and fixed map size).</li>
+                        <li><strong>Space Complexity:</strong> $O(1)$ (for the fixed-size map).</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- VI. Matrix & Grid Traversal -->
+        <section id="matrix-traversal" class="mb-8">
+            <h2 class="text-indigo-600">VI. Matrix & Grid Traversal</h2>
+
+            <!-- Spiral Matrix -->
+            <div id="spiral-matrix" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Spiral Matrix</h3>
+                <p class="problem-description">Given an `m x n` matrix, return all elements of the matrix in spiral order.</p>
+                <p class="core-idea"><strong>Core Idea: Boundary Tracking with Four Pointers</strong></p>
+                <p>Use `top`, `bottom`, `left`, `right` pointers to define boundaries. "Peel off" layers of the matrix (right, down, left, up) and shrink boundaries until all elements are visited.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Initialize:</strong> `result = []`, `top=0`, `bottom=m-1`, `left=0`, `right=n-1`. Handle empty matrix.</li>
+                    <li><strong>Main Loop:</strong> `while (top <= bottom && left <= right)`:
+                        <ul>
+                            <li><strong>Right:</strong> `for c from left to right`, `result.push(matrix[top][c])`; `top++`.</li>
+                            <li><strong>Down:</strong> `for r from top to bottom`, `result.push(matrix[r][right])`; `right--`.</li>
+                            <li><strong>Left:</strong> `for c from right down to left`, `result.push(matrix[bottom][c])`; `bottom--`.</li>
+                            <li><strong>Up:</strong> `for r from bottom down to top`, `result.push(matrix[r][left])`; `left++`.</li>
+                            <li>**Crucial:** Add `if (top > bottom) break;` or `if (left > right) break;` after each horizontal/vertical traversal to handle single-row/column cases and termination.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Return `result`.</strong></li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {number[][]} matrix
+ * @return {number[]}
+ */
+function spiralOrder(matrix) {
+    const result = [];
+    const m = matrix.length;
+    if (m === 0) return result;
+    const n = matrix[0].length;
+    if (n === 0) return result;
+
+    let top = 0;
+    let bottom = m - 1;
+    let left = 0;
+    let right = n - 1;
+
+    while (top &lt;= bottom && left &lt;= right) {
+        for (let c = left; c &lt;= right; c++) {
+            result.push(matrix[top][c]);
+        }
+        top++;
+        if (top > bottom) break;
+
+        for (let r = top; r &lt;= bottom; r++) {
+            result.push(matrix[r][right]);
+        }
+        right--;
+        if (left > right) break;
+
+        for (let c = right; c >= left; c--) {
+            result.push(matrix[bottom][c]);
+        }
+        bottom--;
+        if (top > bottom) break;
+
+        for (let r = bottom; r >= top; r--) {
+            result.push(matrix[r][left]);
+        }
+        left++;
+    }
+    return result;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(M \cdot N)$ where $M, N$ are matrix dimensions.</li>
+                        <li><strong>Space Complexity:</strong> $O(M \cdot N)$ for the result array.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Word Search -->
+            <div id="word-search" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Word Search</h3>
+                <p class="problem-description">Given an `m x n` grid `board` and a string `word`, return `true` if `word` exists in the grid. Word constructed from adjacent cells (horizontally/vertically). Same cell not used more than once.</p>
+                <p class="core-idea"><strong>Core Idea: Depth-First Search (DFS) with Backtracking</strong></p>
+                <p>Explore all possible paths from every cell matching `word[0]`. Recursively try to match subsequent characters by moving to adjacent, unvisited cells. Mark visited, then unmark (backtrack).</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Outer Loop:</strong> Iterate every cell `(r, c)` in `board`. If `board[r][c] === word[0]`, start `dfs(r, c, 0)`.</li>
+                    <li><strong>Recursive `dfs(row, col, wordIndex)`:</strong>
+                        <ul>
+                            <li><strong>Base Cases:</strong>
+                                <ul>
+                                    <li>If `wordIndex === word.length`, return `true` (word found).</li>
+                                    <li>If out of bounds OR `board[row][col] !== word[wordIndex]`, return `false`.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Mark Visited:</strong> Store `originalChar = board[row][col]`, then `board[row][col] = '#'`.</li>
+                            <li><strong>Explore Neighbors:</strong> For each of 4 directions `(dr, dc)`:
+                                <ul>
+                                    <li>Call `dfs(row + dr, col + dc, wordIndex + 1)`. If `true`, return `true`.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Backtracking:</strong> Restore `board[row][col] = originalChar`. Return `false`.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Return `false` from Main:</strong> If no DFS finds the word.</li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {character[][]} board
+ * @param {string} word
+ * @return {boolean}
+ */
+function exist(board, word) {
+    const m = board.length;
+    if (m === 0) return false;
+    const n = board[0].length;
+    if (n === 0) return false;
+    if (word.length === 0) return true;
+
+    const directions = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+
+    const dfs = (row, col, wordIndex) => {
+        if (wordIndex === word.length) {
+            return true;
+        }
+        if (row &lt; 0 || row >= m || col &lt; 0 || col >= n || board[row][col] !== word[wordIndex]) {
+            return false;
+        }
+
+        const originalChar = board[row][col];
+        board[row][col] = '#'; // Mark as visited
+
+        let found = false;
+        for (const [dr, dc] of directions) {
+            const newRow = row + dr;
+            const newCol = col + dc;
+            if (dfs(newRow, newCol, wordIndex + 1)) {
+                found = true;
+                break;
+            }
+        }
+
+        board[row][col] = originalChar; // Backtrack: restore original char
+        return found;
+    };
+
+    for (let r = 0; r &lt; m; r++) {
+        for (let c = 0; c &lt; n; c++) {
+            if (board[r][c] === word[0]) {
+                if (dfs(r, c, 0)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(M \cdot N \cdot 3^L)$ where $M, N$ are board dimensions and $L$ is word length.</li>
+                        <li><strong>Space Complexity:</strong> $O(L)$ for recursion stack.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+
+            <!-- Find Duplicate File in System -->
+            <div id="find-duplicate-file" class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+                <h3>Find Duplicate File in System</h3>
+                <p class="problem-description">Given `paths` of directory info, return all duplicate files in the file system (same content). Output is a list of groups of file paths.</p>
+                <p class="core-idea"><strong>Core Idea: Hash Map to Group by Content</strong></p>
+                <p>Use a hash map where keys are file contents and values are lists of file paths. Parse each input string to extract content and path, then populate the map.</p>
+                <h4>Algorithm Steps:</h4>
+                <ol>
+                    <li><strong>Initialize `contentMap = new Map()`</strong> (`Map<fileContent, filePath[]>`).</li>
+                    <li><strong>Parse Each Path String:</strong> For each `pathString` in `paths`:
+                        <ul>
+                            <li>Split by space: `directoryPath = parts[0]`, `fileInfo = parts[1...]`.</li>
+                            <li>For each `fileInfo`:
+                                <ul>
+                                    <li>Extract `fileName` and `fileContent` (using `indexOf('(')` and `substring`).</li>
+                                    <li>Construct `fullFilePath = directoryPath + '/' + fileName`.</li>
+                                    <li>If `!contentMap.has(fileContent)`, `contentMap.set(fileContent, [])`.</li>
+                                    <li>`contentMap.get(fileContent).push(fullFilePath)`.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Filter for Duplicates:</strong> Initialize `result = []`. Iterate `contentMap.values()`. If `filePathsArray.length > 1`, `result.push(filePathsArray)`.</li>
+                    <li><strong>Return `result`.</strong></li>
+                </ol>
+                <h4>JavaScript Code:</h4>
+                <pre><code>/**
+ * @param {string[]} paths
+ * @return {string[][]}
+ */
+function findDuplicate(paths) {
+    const contentMap = new Map();
+
+    for (const pathString of paths) {
+        const parts = pathString.split(' ');
+        const directoryPath = parts[0];
+
+        for (let i = 1; i &lt; parts.length; i++) {
+            const fileInfo = parts[i];
+            const openParenIndex = fileInfo.indexOf('(');
+            const fileName = fileInfo.substring(0, openParenIndex);
+            const fileContent = fileInfo.substring(openParenIndex + 1, fileInfo.length - 1);
+
+            const fullFilePath = `${directoryPath}/${fileName}`;
+
+            if (!contentMap.has(fileContent)) {
+                contentMap.set(fileContent, []);
+            }
+            contentMap.get(fileContent).push(fullFilePath);
+        }
+    }
+
+    const result = [];
+    for (const filePathsArray of contentMap.values()) {
+        if (filePathsArray.length > 1) {
+            result.push(filePathsArray);
+        }
+    }
+    return result;
+}</code></pre>
+                <div class="complexity-analysis">
+                    <strong>Complexity Analysis:</strong>
+                    <ul>
+                        <li><strong>Time Complexity:</strong> $O(\sum P)$ where $\sum P$ is the total length of all file paths and contents in the input.</li>
+                        <li><strong>Space Complexity:</strong> $O(\sum P)$ for storing the map and result.</li>
+                    </ul>
+                </div>
+                <a href="#top" class="back-to-top">Back to Top</a>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
