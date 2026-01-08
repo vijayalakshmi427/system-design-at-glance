@@ -252,13 +252,36 @@
                 gap: 1rem;
             }
         }
+
+        #backToTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 100;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+            color: white;
+            cursor: pointer;
+            padding: 14px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        #backToTopBtn:hover {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.20);
+        }
     </style>
 </head>
 <body id="top">
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="system_design_cheat_sheet.html">System Design</a></li>
+            <li><a href="system_design_cheat_sheet.html">System Design Cheat Sheet</a></li>
+            <li><a href="system_design_case_studies.html">System Design Case Studies</a></li>
             <li><a href="coding_patterns.html">Coding Patterns</a></li>
             <li><a href="coding_questions.html" class="active">Practice Problems</a></li>
         </ul>
@@ -1726,5 +1749,26 @@ function findDuplicate(paths) {
             </div>
         </section>
     </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTopBtn" title="Back to Top">↑ Top</button>
+    <script>
+        // Get the button
+        var backToTopBtn = document.getElementById("backToTopBtn");
+
+        // When the user scrolls down 200px from the top, show the button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                backToTopBtn.style.display = "block";
+            } else {
+                backToTopBtn.style.display = "none";
+            }
+        };
+
+        // When the user clicks on the button, scroll to the top
+        backToTopBtn.onclick = function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        };
+    </script>
 </body>
 </html>
