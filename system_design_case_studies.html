@@ -1,0 +1,3214 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>System Design Case Studies –  System Design Sample Reasonings - Complete Study Guide</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                line-height: 1.6;
+                color: #1e293b;
+                background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+                min-height: 100vh;
+                padding: 0;
+            }
+
+            nav {
+                background: rgba(15, 23, 42, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 1rem 2rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            nav ul {
+                list-style: none;
+                display: flex;
+                gap: 2rem;
+                flex-wrap: wrap;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0;
+            }
+
+            nav a {
+                color: #e2e8f0;
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.2s ease;
+            }
+
+            nav a:hover {
+                color: #06b6d4;
+            }
+
+            nav a.active {
+                color: #06b6d4;
+            }
+            .nfr-fr {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #28a745;
+        }
+            
+            .container {
+                max-width: 1200px;
+                margin: 2rem auto;
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+                overflow: hidden;
+            }
+            
+            .header {
+                background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+                color: white;
+                padding: 40px;
+                text-align: center;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+            }
+            
+            .header p {
+                font-size: 1.125rem;
+                opacity: 0.9;
+            }
+            
+            .content {
+                padding: 40px;
+            }
+            
+            .toc {
+                background: #f8fafc;
+                border-radius: 12px;
+                padding: 30px;
+                margin-bottom: 40px;
+                border-left: 4px solid #0891b2;
+            }
+            
+            .toc h2 {
+                color: #0f172a;
+                margin-bottom: 20px;
+                font-size: 1.5rem;
+            }
+            
+            .toc ul {
+                list-style: none;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 10px;
+            }
+            
+            .toc li {
+                background: white;
+                padding: 10px 15px;
+                border-radius: 5px;
+                border-left: 3px solid #0891b2;
+                transition: all 0.3s ease;
+            }
+            
+            .toc li:hover {
+                transform: translateX(5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+            
+            .toc a {
+                color: #0f172a;
+                text-decoration: none;
+                font-weight: 500;
+            }
+            
+            .topic-section {
+                margin-bottom: 50px;
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            
+            .topic-header {
+                background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+                color: white;
+                padding: 25px;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+            
+            .question-variant {
+                background: white;
+                padding: 30px;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .question-variant:last-child {
+                border-bottom: none;
+            }
+            
+            .question-title {
+                color: #0f172a;
+                font-size: 1.3rem;
+                font-weight: bold;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid #e2e8f0;
+            }
+            
+            .question-text {
+                background: #f8fafc;
+                padding: 20px;
+                border-radius: 8px;
+                margin-bottom: 25px;
+                font-style: italic;
+                border-left: 4px solid #0891b2;
+                color: #475569;
+            }
+            
+            .solution-section {
+                margin-bottom: 25px;
+            }
+            
+            .solution-header {
+                background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-weight: bold;
+                margin-bottom: 15px;
+            }
+            
+            .clarifying-questions {
+                background: #fff3cd;
+                border: 1px solid #ffeaa7;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .clarifying-questions h4 {
+                color: #856404;
+                margin-bottom: 10px;
+            }
+            
+            .clarifying-questions ul {
+                color: #856404;
+                margin-left: 20px;
+            }
+            
+            .main-issues {
+                background: #f8d7da;
+                border: 1px solid #f5c6cb;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .main-issues h4 {
+                color: #721c24;
+                margin-bottom: 10px;
+            }
+            
+            .solutions {
+                background: #d4edda;
+                border: 1px solid #c3e6cb;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .solutions h4 {
+                color: #155724;
+                margin-bottom: 10px;
+            }
+            .main-solution {
+            background: #d1ecf1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #17a2b8;
+        }
+            .requirements {
+                background: #cce5ff;
+                border: 1px solid #b8daff;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .requirements h4 {
+                color: #004085;
+                margin-bottom: 10px;
+            }
+            
+            .tradeoffs {
+                background: #e2e3e5;
+                border: 1px solid #d6d8db;
+                border-radius: 8px;
+                padding: 20px;
+            }
+            
+            .tradeoffs h4 {
+                color: #383d41;
+                margin-bottom: 10px;
+            }
+            
+            .highlight {
+                background: #fff3cd;
+                padding: 15px;
+                border-radius: 8px;
+                border-left: 4px solid #ffc107;
+                margin: 15px 0;
+            }
+            .highlight-other {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+            
+            .tech-stack {
+                background: #e7f3ff;
+                border: 1px solid #b3d9ff;
+                border-radius: 8px;
+                padding: 20px;
+                margin: 15px 0;
+            }
+            
+            .tech-stack h4 {
+                color: #0066cc;
+                margin-bottom: 10px;
+            }
+            
+            @media (max-width: 768px) {
+                .container {
+                    margin: 1rem;
+                    border-radius: 12px;
+                }
+                
+                .header {
+                    padding: 20px;
+                }
+                
+                .header h1 {
+                    font-size: 2rem;
+                }
+                
+                .content {
+                    padding: 20px;
+                }
+                
+                .toc ul {
+                    grid-template-columns: 1fr;
+                }
+
+                nav ul {
+                    gap: 1rem;
+                }
+            }
+
+            #backToTopBtn {
+                display: none;
+                position: fixed;
+                bottom: 40px;
+                right: 40px;
+                z-index: 100;
+                font-size: 18px;
+                border: none;
+                outline: none;
+                background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+                color: white;
+                cursor: pointer;
+                padding: 14px 20px;
+                border-radius: 50px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                transition: background 0.3s, box-shadow 0.3s;
+            }
+            #backToTopBtn:hover {
+                background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+                box-shadow: 0 6px 18px rgba(0,0,0,0.20);
+            }
+        </style>
+    </head>
+<body>
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="system_design_cheat_sheet.html">System Design Cheat Sheet</a></li>
+         <li><a href="system_design_case_studies.html" class="active">System Design Case Studies</a></li>
+        <li><a href="coding_patterns.html">Coding Patterns</a></li>
+        <li><a href="coding_questions.html">Practice Problems</a></li>
+    </ul>
+</nav>
+
+<section style="background:#fff7ed;border:1px solid #fed7aa;padding:1rem;margin-bottom:2rem;margin-top:2rem;max-width:1200px;margin-left:auto;margin-right:auto;border-radius:8px;">
+  <strong>Disclaimer</strong>
+  <p>
+    The scenarios on this page are generalized system design case studies inspired by
+    publicly discussed problems and common industry patterns.
+    They are not tied to any specific company, interview process, or proprietary material.
+    The reasoning presented represents one possible way to think about the problem;
+    multiple valid designs may exist depending on constraints.
+  </p>
+</section>
+
+<!-- Content from system_design_solutions.html -->
+<div class="container">
+    <div class="header">
+        <h1>🚀  System Design Sample Reasonings</h1>
+        <p>Complete Study Guide - 25 Question Variants Across 15 Topics</p>
+    </div>
+    
+    <div class="content">
+        <div class="toc">
+            <h2>📚 Table of Contents</h2>
+            <ul>
+                <li><a href="#music-applications">🎵 Music Applications (3 variants)</a></li>
+                <li><a href="#file-storage">📁 File Storage & Deduplication (2 variants)</a></li>
+                <li><a href="#password-validation">🔒 Password Validation (2 variants)</a></li>
+                <li><a href="#data-storage">💾 Data Storage & Cost Estimation (2 variants)</a></li>
+                <li><a href="#arcade-gaming">🎮 Arcade/Gaming Systems (2 variants)</a></li>
+                <li><a href="#video-processing">🎥 Video Processing (1 variant)</a></li>
+                 <li><a href="#video-processing-2">🎥 Video Processing-2 (1 variant)</a></li>
+                <li><a href="#vending-machines">🏪 Vending Machines (1 variant)</a></li>
+                <li><a href="#mobile-games">📱 Mobile Game Analysis (1 variant)</a></li>
+                <li><a href="#photo-sharing">📸 Photo Sharing & Data Distribution (1 variant)</a></li>
+                <li><a href="#crossword-puzzle">🧩 Crossword Puzzle Apps (2 variants)</a></li>
+                <li><a href="#xml-processing">📄 XML Processing (2 variants)</a></li>
+                <li><a href="#url-processing">🔗 URL Processing & Budget Planning (1 variant)</a></li>
+                <li><a href="#social-media">📱 Social Media Scaling (3 variants)</a></li>
+                <li><a href="#social-media-scaling">📱 Social Media Scaling (3 variants)</a></li>
+                <li><a href="#leaderboard">🏆 Leaderboard & Search (1 variant)</a></li>
+                <li><a href="#mobile-media">📱 Mobile App Media Content (1 variant)</a></li>
+                <li><a href="#ml-scaling">🤖 ML Service Scaling (1 variant)</a></li>
+                <li><a href="#server-capacity">🖥️ Server Capacity Planning (1 variant)</a></li>
+  
+            </ul>
+        </div>
+
+        <div id="music-applications" class="topic-section">
+            <div class="topic-header">🎵 Music Applications</div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 1: Multi-Server Architecture</div>
+                <div class="question-text">
+                    We have music application up and running. What are the advantages and disadvantages of running system on multiple servers?
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>What's the current user base and expected growth?</li>
+                        <li>Are we talking about horizontal scaling or service decomposition?</li>
+                        <li>What's the current bottleneck - CPU, storage, or network?</li>
+                        <li>Do we need global distribution or single region?</li>
+                        <li>What's the read/write ratio for music streaming vs uploads?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🎯 Main Issues & Analysis:</h4>
+                    <p><strong>Current State:</strong> Single-server architecture hitting scalability limits</p>
+                    <p><strong>Core Challenge:</strong> Balancing scalability benefits with operational complexity</p>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Multi-Server Advantages:</h4>
+                    <ul>
+                        <li><strong>Horizontal Scalability:</strong> Handle more concurrent users by adding servers</li>
+                        <li><strong>High Availability:</strong> Eliminate single point of failure</li>
+                        <li><strong>Geographic Distribution:</strong> Reduce latency with CDN and edge servers</li>
+                        <li><strong>Load Distribution:</strong> Separate read-heavy (streaming) from write-heavy (uploads) workloads</li>
+                        <li><strong>Resource Optimization:</strong> Dedicated servers for different functions (streaming, metadata, user management)</li>
+                    </ul>
+                    
+                    <h4>❌ Multi-Server Disadvantages:</h4>
+                    <ul>
+                        <li><strong>Data Consistency:</strong> Eventual consistency challenges across replicas</li>
+                        <li><strong>Network Complexity:</strong> Inter-server communication overhead</li>
+                        <li><strong>Operational Overhead:</strong> Monitoring, deployment, and maintenance complexity</li>
+                        <li><strong>Cost:</strong> Higher infrastructure and operational costs</li>
+                        <li><strong>Distributed System Challenges:</strong> Network partitions, CAP theorem trade-offs</li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 Requirements Analysis:</h4>
+                    <p><strong>Functional Requirements:</strong></p>
+                    <ul>
+                        <li>Stream music with low latency</li>
+                        <li>Upload and store music files</li>
+                        <li>User authentication and playlists</li>
+                        <li>Search and discovery</li>
+                    </ul>
+                    <p><strong>Non-Functional Requirements:</strong></p>
+                    <ul>
+                        <li><strong>Availability:</strong> 99.9% uptime</li>
+                        <li><strong>Scalability:</strong> Handle 10M+ concurrent users</li>
+                        <li><strong>Latency:</strong> <100ms for metadata, <2s for streaming start</li>
+                        <li><strong>Consistency:</strong> Strong for user data, eventual for music catalog</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Recommended Architecture:</h4>
+                    <p><strong>Load Balancer:</strong> NGINX/HAProxy for traffic distribution</p>
+                    <p><strong>Application Servers:</strong> Multiple instances behind load balancer</p>
+                    <p><strong>Database:</strong> Master-slave MySQL for metadata, sharded by user_id</p>
+                    <p><strong>File Storage:</strong> S3/GCS for music files with CDN</p>
+                    <p><strong>Cache:</strong> Redis for session management and popular content</p>
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Final Recommendation:</h4>
+                    <p><strong>Go with multi-server architecture because:</strong></p>
+                    <ul>
+                        <li>Music streaming is inherently read-heavy and benefits from horizontal scaling</li>
+                        <li>Global user base requires geographic distribution</li>
+                        <li>The availability benefits outweigh complexity costs</li>
+                        <li>Start with microservices: User Service, Music Service, Streaming Service</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 2: Consistent Hashing Load Distribution</div>
+                <div class="question-text">
+                    Given a music streaming and uploading service, highly scalable system works on consistent hashing. Given that load is equally distributed on all servers. Do you see any concern with this architecture?
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>What's the hashing key - user_id, song_id, or something else?</li>
+                        <li>Are we talking about data distribution or request routing?</li>
+                        <li>What's the replication factor?</li>
+                        <li>How do we handle hot users/songs?</li>
+                        <li>What happens during server failures?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🚨 Concerns with Pure Consistent Hashing:</h4>
+                    <p><strong>Hot Data Problem:</strong> Popular songs/artists create uneven load despite equal distribution</p>
+                    <p><strong>Geographic Latency:</strong> Users may hit servers far from their location</p>
+                    <p><strong>Cache Efficiency:</strong> Related data scattered across servers</p>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Sample Reasonings & Improvements:</h4>
+                    <ul>
+                        <li><strong>Virtual Nodes:</strong> Each physical server handles multiple virtual nodes for better distribution</li>
+                        <li><strong>Load-Aware Routing:</strong> Monitor server load and route requests to less loaded servers</li>
+                        <li><strong>Hierarchical Hashing:</strong> Geographic clustering + consistent hashing within regions</li>
+                        <li><strong>Hot Data Replication:</strong> Replicate popular content to multiple servers</li>
+                        <li><strong>Adaptive Caching:</strong> Cache popular content at edge servers</li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 System Requirements:</h4>
+                    <p><strong>Functional:</strong> Consistent data access, fault tolerance</p>
+                    <p><strong>Non-Functional:</strong> Low latency, high availability, even load distribution</p>
+                    <p><strong>This is a read-heavy system</strong> with occasional writes (uploads)</p>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Enhanced Architecture:</h4>
+                    <p><strong>Consistent Hashing Ring:</strong> With virtual nodes (150-200 per server)</p>
+                    <p><strong>Load Balancer:</strong> Weighted round-robin with health checks</p>
+                    <p><strong>CDN:</strong> CloudFront/CloudFlare for static music files</p>
+                    <p><strong>Monitoring:</strong> Real-time load monitoring and alerting</p>
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Recommendation:</h4>
+                    <p><strong>Use enhanced consistent hashing with:</strong></p>
+                    <ul>
+                        <li>Virtual nodes for better distribution</li>
+                        <li>Geographic awareness for latency</li>
+                        <li>Hot data detection and replication</li>
+                        <li>Load monitoring and adaptive routing</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 3: Distributed Song Storage</div>
+                <div class="question-text">
+                    A music streaming service has the songs distributed across servers. What are the potential problems?
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>How are songs distributed - by artist, genre, or random?</li>
+                        <li>What's the replication strategy?</li>
+                        <li>How do we handle metadata vs audio files?</li>
+                        <li>What's the failover mechanism?</li>
+                        <li>How do we discover which server has a specific song?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🚨 Potential Problems:</h4>
+                    <ul>
+                        <li><strong>Single Point of Failure:</strong> If server with unique song goes down, song becomes unavailable</li>
+                        <li><strong>Metadata Inconsistency:</strong> Song metadata and audio files may be out of sync</li>
+                        <li><strong>Discovery Overhead:</strong> Need efficient way to locate songs across servers</li>
+                        <li><strong>Hot Partitions:</strong> Servers with popular songs get overloaded</li>
+                        <li><strong>Network Latency:</strong> Cross-server requests for playlists spanning multiple servers</li>
+                        <li><strong>Backup Complexity:</strong> Ensuring all songs are properly backed up</li>
+                    </ul>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Sample Reasonings:</h4>
+                    <ul>
+                        <li><strong>Replication Strategy:</strong> Minimum 3 replicas per song across different servers</li>
+                        <li><strong>Metadata Service:</strong> Centralized metadata store with song location mapping</li>
+                        <li><strong>Load Balancing:</strong> Intelligent routing to least loaded replica</li>
+                        <li><strong>Caching Strategy:</strong> Cache popular songs at edge servers</li>
+                        <li><strong>Health Monitoring:</strong> Real-time server health checks and automatic failover</li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 System Design Considerations:</h4>
+                    <p><strong>Availability:</strong> 99.95% - music must be always accessible</p>
+                    <p><strong>Consistency:</strong> Eventual consistency for song catalog, strong for user preferences</p>
+                    <p><strong>Partition Tolerance:</strong> System must work despite network failures</p>
+                    <p><strong>Read-Heavy Workload:</strong> Optimize for fast reads, streaming</p>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Recommended Architecture:</h4>
+                    <p><strong>Metadata Store:</strong> MongoDB cluster with song-to-server mapping</p>
+                    <p><strong>File Storage:</strong> Distributed file system (HDFS) or object storage (S3)</p>
+                    <p><strong>Service Discovery:</strong> Consul/Eureka for server registry</p>
+                    <p><strong>Load Balancer:</strong> HAProxy with health checks</p>
+                    <p><strong>CDN:</strong> Multi-tier caching strategy</p>
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Final Recommendation:</h4>
+                    <p><strong>Implement distributed storage with:</strong></p>
+                    <ul>
+                        <li>3-way replication for high availability</li>
+                        <li>Separate metadata and audio file storage</li>
+                        <li>Intelligent load balancing and failover</li>
+                        <li>CDN for popular content</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="file-storage" class="topic-section">
+            <div class="topic-header">📁 File Storage & Deduplication</div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 1: File Size & Byte Comparison</div>
+                <div class="question-text">
+                    User is uploading similar files to server. In order to save space, we check file size. If file size is same we compare byte by byte and then create symlink of new file to old file. What is problem with the system and any optimized approach?
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>What's the average file size and upload frequency?</li>
+                        <li>Are files shared between users or private?</li>
+                        <li>What's the storage budget and deduplication target?</li>
+                        <li>Do we need to maintain separate file metadata per user?</li>
+                        <li>What's the acceptable latency for uploads?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🚨 Problems with Current Approach:</h4>
+                    <ul>
+                        <li><strong>Performance Bottleneck:</strong> Byte-by-byte comparison is O(n) and CPU intensive</li>
+                        <li><strong>False Positives:</strong> Files with same size but different content will trigger comparison</li>
+                        <li><strong>Scalability Issues:</strong> Doesn't scale with large files or high upload frequency</li>
+                        <li><strong>Symlink Fragility:</strong> Symlinks break if original file is deleted</li>
+                        <li><strong>Metadata Confusion:</strong> Different users' files may have same content but different metadata</li>
+                    </ul>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Optimized Approach:</h4>
+                    <ul>
+                        <li><strong>Content Hashing:</strong> Use SHA-256 or MD5 hash as primary deduplication key</li>
+                        <li><strong>Chunked Hashing:</strong> For large files, use rolling hash (similar to rsync)</li>
+                        <li><strong>Reference Counting:</strong> Track how many users reference each unique file</li>
+                        <li><strong>Metadata Separation:</strong> Store file content once, metadata per user</li>
+                        <li><strong>Lazy Deletion:</strong> Only delete files when reference count reaches zero</li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 System Requirements:</h4>
+                    <p><strong>Functional:</strong> Efficient deduplication, data integrity, user isolation</p>
+                    <p><strong>Non-Functional:</strong> Fast uploads, space efficiency, data consistency</p>
+                    <p><strong>Write-Heavy System:</strong> Optimize for quick file processing</p>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Enhanced Architecture:</h4>
+                    <p><strong>Hash Database:</strong> Redis for fast hash lookups</p>
+                    <p><strong>File Storage:</strong> Content-addressed storage (hash-based paths)</p>
+                    <p><strong>Metadata DB:</strong> PostgreSQL for user file metadata</p>
+                    <p><strong>Queue System:</strong> Async processing for hash computation</p>
+                </div>
+                
+                <div class="highlight">
+                    <strong>Key Insight:</strong> Move from comparing files to comparing hashes - O(1) lookup instead of O(n) comparison
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Implementation Strategy:</h4>
+                    <ol>
+                        <li><strong>Hash Generation:</strong> Compute SHA-256 during upload</li>
+                        <li><strong>Hash Lookup:</strong> Check if hash exists in database</li>
+                        <li><strong>Reference Management:</strong> Increment reference count or store new file</li>
+                        <li><strong>Metadata Storage:</strong> Always store per-user metadata separately</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 2: General File Deduplication</div>
+                <div class="question-text">
+                    File system - users upload files, sometimes they upload duplicate files. Find way to not store duplicate files.
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>What's the scale - number of users and files?</li>
+                        <li>Are duplicates within same user or across users?</li>
+                        <li>What file types and sizes are we dealing with?</li>
+                        <li>Do we need to preserve user-specific metadata?</li>
+                        <li>What's the privacy requirement - can users access others' files?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🎯 Core Challenge:</h4>
+                    <p><strong>Duplicate Detection:</strong> Efficiently identify identical files across large dataset</p>
+                    <p><strong>Privacy Concerns:</strong> Users shouldn't access each other's files even if identical</p>
+                    <p><strong>Metadata Handling:</strong> Same content, different names/permissions per user</p>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Comprehensive Sample Reasoning:</h4>
+                    <ul>
+                        <li><strong>Content-Addressable Storage:</strong> Store files by content hash</li>
+                        <li><strong>Multi-Level Deduplication:</strong></li>
+                        <ul>
+                            <li>File-level: Complete file deduplication</li>
+                            <li>Block-level: Chunk-based deduplication for large files</li>
+                        </ul>
+                        <li><strong>Virtual File System:</strong> User sees their own file tree, backend stores deduplicated content</li>
+                        <li><strong>Reference Tracking:</strong> Maintain reference count per content hash</li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 System Requirements:</h4>
+                    <p><strong>Scalability:</strong> Handle millions of files efficiently</p>
+                    <p><strong>Privacy:</strong> Strong user isolation</p>
+                    <p><strong>Consistency:</strong> Strong consistency for user data</p>
+                    <p><strong>Space Efficiency:</strong> Maximize storage savings</p>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Architecture Components:</h4>
+                    <p><strong>Content Store:</strong> S3/GCS with content-addressable paths</p>
+                    <p><strong>Metadata DB:</strong> PostgreSQL with user file mappings</p>
+                    <p><strong>Hash Index:</strong> Redis for fast content hash lookups</p>
+                    <p><strong>Processing Queue:</strong> Kafka for async deduplication</p>
+                    <p><strong>Block Storage:</strong> For chunk-level deduplication</p>
+                </div>
+                
+                <div class="highlight">
+                    <strong>Architecture Pattern:</strong> Separate content storage from user namespace - one content store, multiple user views
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Implementation Approach:</h4>
+                    <ol>
+                        <li><strong>Upload Process:</strong> Hash → Check existence → Store/Reference</li>
+                        <li><strong>User Interface:</strong> Virtual file system with user-specific metadata</li>
+                        <li><strong>Garbage Collection:</strong> Periodic cleanup of unreferenced content</li>
+                        <li><strong>Monitoring:</strong> Track deduplication ratio and storage savings</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div id="password-validation" class="topic-section">
+            <div class="topic-header">🔒 Password Validation</div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 1: English Word Restriction</div>
+                <div class="question-text">
+                    Password validation. Password needs to be English word 8-16 chars. 1 upper case and 1 symbol. What is the problem with the approach?
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>Are we allowing dictionary words or requiring non-dictionary words?</li>
+                        <li>What's the target user base - global or English-speaking only?</li>
+                        <li>What's the security threat model we're protecting against?</li>
+                        <li>Are there regulatory compliance requirements?</li>
+                        <li>What's the acceptable user experience for password creation?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🚨 Major Problems:</h4>
+                    <ul>
+                        <li><strong>Dictionary Attack Vulnerability:</strong> English words are easily guessable</li>
+                        <li><strong>Reduced Entropy:</strong> Limited to ~170,000 English words vs random combinations</li>
+                        <li><strong>Predictable Patterns:</strong> Users will add symbols/caps in predictable ways</li>
+                        <li><strong>Cultural Bias:</strong> Excludes non-English speakers</li>
+                        <li><strong>Brute Force Weakness:</strong> Much smaller search space for attackers</li>
+                    </ul>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Improved Approach:</h4>
+                    <ul>
+                        <li><strong>Entropy-Based Validation:</strong> Minimum 50+ bits of entropy</li>
+                        <li><strong>Blacklist Common Passwords:</strong> Check against known breach databases</li>
+                        <li><strong>Passphrase Support:</strong> Allow multiple words with spaces</li>
+                        <li><strong>Multi-Factor Authentication:</strong> Reduce password burden with 2FA</li>
+                        <li><strong>Password Strength Meter:</strong> Real-time feedback to users</li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 Security Requirements:</h4>
+                    <p><strong>Functional:</strong> Strong authentication, user-friendly validation</p>
+                    <p><strong>Non-Functional:</strong> High security, good UX, regulatory compliance</p>
+                    <p><strong>Threat Model:</strong> Protect against credential stuffing, brute force, social engineering</p>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Security Architecture:</h4>
+                    <p><strong>Password Hashing:</strong> bcrypt/scrypt/Argon2 with salt</p>
+                    <p><strong>Breach Database:</strong> HaveIBeenPwned API integration</p>
+                    <p><strong>Rate Limiting:</strong> Prevent brute force attempts</p>
+                    <p><strong>Audit Logging:</strong> Track authentication attempts</p>
+                </div>
+                
+                <div class="highlight">
+                    <strong>Key Principle:</strong> Security through entropy, not obscurity. Random characters > predictable patterns
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Recommended Policy:</h4>
+                    <ul>
+                        <li><strong>Minimum 12 characters</strong> OR <strong>high entropy score</strong></li>
+                        <li><strong>No dictionary word restrictions</strong> - check against breach databases instead</li>
+                        <li><strong>Support passphrases</strong> - multiple words are stronger than complex single words</li>
+                        <li><strong>Mandatory 2FA</strong> for high-value accounts</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 2: Password Management System</div>
+                <div class="question-text">
+                    You are designing a password management system. The rules are: The password must not contain any English words. The password must be between 8-16 letters and must contain 1 of Uppercase letter, lowercase letter and a symbol. Do you see any issues with this? What would you change to improve it?
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>Are we storing passwords for users or generating them?</li>
+                        <li>What's the target security level - enterprise or consumer?</li>
+                        <li>Do we need to support password sharing between users?</li>
+                        <li>What's the master password policy?</li>
+                        <li>Are there integration requirements with other systems?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🚨 Issues with Current Rules:</h4>
+                    <ul>
+                        <li><strong>Length Limitation:</strong> 16 char max is too restrictive for strong passwords</li>
+                        <li><strong>Composition Rules:</strong> Rigid requirements reduce actual entropy</li>
+                        <li><strong>English-Only Focus:</strong> Doesn't consider other languages</li>
+                        <li><strong>User Experience:</strong> Difficult to create compliant passwords</li>
+                        <li><strong>False Security:</strong> Complex rules don't guarantee strong passwords</li>
+                    </ul>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Enhanced Password Management System:</h4>
+                    <ul>
+                        <li><strong>Password Generation:</strong> Automatic generation of high-entropy passwords</li>
+                        <li><strong>Flexible Length:</strong> Support passwords up to 256 characters</li>
+                        <li><strong>Entropy Measurement:</strong> Real-time entropy calculation</li>
+                        <li><strong>Zero-Knowledge Architecture:</strong> Client-side encryption/decryption</li>
+                        <li><strong>Secure Storage:</strong> End-to-end encryption with user master key</li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 System Requirements:</h4>
+                    <p><strong>Functional:</strong> Store, generate, and auto-fill passwords</p>
+                    <p><strong>Non-Functional:</strong> Zero-knowledge security, high availability, cross-platform</p>
+                    <p><strong>Security Model:</strong> Even the service provider cannot access user passwords</p>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Architecture Components:</h4>
+                    <p><strong>Client Apps:</strong> Browser extensions, mobile apps with local crypto</p>
+                    <p><strong>Encryption:</strong> AES-256 with PBKDF2/scrypt for key derivation</p>
+                    <p><strong>Backend:</strong> Store encrypted blobs, no access to plaintext</p>
+                    <p><strong>Sync:</strong> Secure multi-device synchronization</p>
+                    <p><strong>Backup:</strong> Encrypted backup with recovery keys</p>
+                </div>
+                
+                <div class="highlight">
+                    <strong>Core Principle:</strong> Generate strong passwords automatically, don't force users to create weak ones manually
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Improved Password Policy:</h4>
+                    <ul>
+                        <li><strong>Auto-Generate:</strong> Default to 20+ character random passwords</li>
+                        <li><strong>Flexible Rules:</strong> Allow sites to specify their own requirements</li>
+                        <li><strong>Entropy-Based:</strong> Measure actual password strength</li>
+                        <li><strong>User Choice:</strong> Support both generated and custom passwords</li>
+                        <li><strong>Secure by Default:</strong> Strongest settings as default</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="data-storage" class="topic-section">
+            <div class="topic-header">💾 Data Storage & Cost Estimation</div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 1: Logging System Storage</div>
+                <div class="question-text">
+                    We have system running for logging. How would you estimate data storage cost for next 1 year?
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>What's the current daily/monthly log volume?</li>
+                        <li>What types of logs - application, access, error, audit?</li>
+                        <li>What's the retention policy and compliance requirements?</li>
+                        <li>Are logs structured (JSON) or unstructured (text)?</li>
+                        <li>What's the expected business growth rate?</li>
+                        <li>Current storage infrastructure - cloud or on-premise?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🎯 Estimation Approach:</h4>
+                    <p><strong>Data Collection:</strong> Establish baseline metrics</p>
+                    <p><strong>Growth Modeling:</strong> Account for business and technical growth</p>
+                    <p><strong>Storage Tiers:</strong> Consider different storage classes</p>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Estimation Framework:</h4>
+                    <ul>
+                        <li><strong>Current Metrics:</strong>
+                            <ul>
+                                <li>Average log entry size (e.g., 200 bytes)</li>
+                                <li>Logs per second per server (e.g., 50/sec)</li>
+                                <li>Number of servers (e.g., 100)</li>
+                                <li>Daily volume = 100 servers × 50 logs/sec × 86400 sec × 200 bytes = 8.64 GB/day</li>
+                            </ul>
+                        </li>
+                        <li><strong>Growth Factors:</strong>
+                            <ul>
+                                <li>Business growth: 50% more users/year</li>
+                                <li>Infrastructure growth: 30% more servers</li>
+                                <li>Feature growth: 20% more logging</li>
+                            </ul>
+                        </li>
+                        <li><strong>Storage Tiers:</strong>
+                            <ul>
+                                <li>Hot (0-7 days): Frequent access, SSD storage</li>
+                                <li>Warm (7-90 days): Occasional access, standard storage</li>
+                                <li>Cold (90+ days): Archive, glacier storage</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 Storage Requirements:</h4>
+                    <p><strong>Functional:</strong> Reliable storage, fast search, compliance</p>
+                    <p><strong>Non-Functional:</strong> Cost-effective, scalable, durable</p>
+                    <p><strong>Write-Heavy System:</strong> Optimize for high write throughput</p>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Storage Architecture:</h4>
+                    <p><strong>Hot Tier:</strong> Elasticsearch cluster for search</p>
+                    <p><strong>Warm Tier:</strong> S3 Standard for occasional access</p>
+                    <p><strong>Cold Tier:</strong> S3 Glacier for long-term retention</p>
+                    <p><strong>Processing:</strong> Kafka for real-time ingestion</p>
+                    <p><strong>Compression:</strong> Gzip compression (3-5x reduction)</p>
+                </div>
+                
+                <div class="highlight">
+                    <strong>Sample Calculation:</strong><br>
+                    Current: 8.64 GB/day × 365 days = 3.15 TB/year<br>
+                    With growth: 3.15 TB × 1.5 × 1.3 × 1.2 = 7.37 TB/year<br>
+                    With compression: 7.37 TB ÷ 4 = 1.84 TB actual storage
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Cost Estimation (AWS pricing):</h4>
+                    <ul>
+                        <li><strong>Hot Storage (7 days):</strong> 36 GB × $0.23/GB = $8.28/month</li>
+                        <li><strong>Warm Storage (83 days):</strong> 430 GB × $0.023/GB = $9.89/month</li>
+                        <li><strong>Cold Storage (275 days):</strong> 1.37 TB × $0.004/GB = $5.48/month</li>
+                        <li><strong>Total Monthly:</strong> ~$24/month = $288/year</li>
+                        <li><strong>With 20% buffer:</strong> $346/year</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 2: Photo Storage Service</div>
+                <div class="question-text">
+                    We are running a simple photo storage and sharing service. People upload their photos to our servers and then give links to other users who can then view them. Instead of using a cloud service, we have our own server farms. You've been tasked with creating an estimate of the storage required over the coming year and the cost of that storage. What information would you need and what factors would you consider as you generate this estimate?
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Information Needed:</h4>
+                    <ul>
+                        <li><strong>User Metrics:</strong> Current users, growth rate, user behavior patterns</li>
+                        <li><strong>Photo Characteristics:</strong> Average file size, formats, resolution</li>
+                        <li><strong>Usage Patterns:</strong> Upload frequency, sharing ratio, retention</li>
+                        <li><strong>Business Model:</strong> Storage limits, premium features, monetization</li>
+                        <li><strong>Technical Constraints:</strong> Bandwidth, server capacity, budget</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🎯 Key Factors to Consider:</h4>
+                    <ul>
+                        <li><strong>Growth Patterns:</strong> User acquisition, seasonal variations</li>
+                        <li><strong>Storage Overhead:</strong> Metadata, thumbnails, redundancy</li>
+                        <li><strong>Hardware Lifecycle:</strong> Replacement cycles, capacity planning</li>
+                        <li><strong>Operational Costs:</strong> Power, cooling, maintenance</li>
+                    </ul>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Estimation Model:</h4>
+                    <ul>
+                        <li><strong>Baseline Metrics:</strong>
+                            <ul>
+                                <li>Current users: 100K</li>
+                                <li>Average photo size: 3MB</li>
+                                <li>Photos per user per month: 50</li>
+                                <li>Monthly upload volume: 100K × 50 × 3MB = 15TB</li>
+                            </ul>
+                        </li>
+                        <li><strong>Growth Projections:</strong>
+                            <ul>
+                                <li>User growth: 20% monthly</li>
+                                <li>Usage growth: 10% monthly (more engagement)</li>
+                                <li>Photo size growth: 5% monthly (better cameras)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Storage Overhead:</strong>
+                            <ul>
+                                <li>Thumbnails: 50KB per photo</li>
+                                <li>Metadata: 1KB per photo</li>
+                                <li>Redundancy: 3x replication</li>
+                                <li>Total multiplier: 3.5x</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 System Requirements:</h4>
+                    <p><strong>Functional:</strong> Store photos, generate thumbnails, share links</p>
+                    <p><strong>Non-Functional:</strong> High availability, fast access, cost-effective</p>
+                    <p><strong>Read-Heavy System:</strong> Optimize for fast photo retrieval</p>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Storage Infrastructure:</h4>
+                    <p><strong>Hot Storage:</strong> SSDs for recent photos (30 days)</p>
+                    <p><strong>Warm Storage:</strong> HDDs for older photos (6 months)</p>
+                    <p><strong>Cold Storage:</strong> Tape backup for long-term retention</p>
+                    <p><strong>CDN:</strong> Edge caching for popular photos</p>
+                    <p><strong>Compression:</strong> Lossless compression for archival</p>
+                </div>
+                
+                <div class="highlight">
+                    <strong>Year-End Projection:</strong><br>
+                    Month 1: 15TB → Month 12: 15TB × (1.2 × 1.1 × 1.05)^11 = 435TB<br>
+                    Total yearly storage: ~2.4PB<br>
+                    With overhead: 2.4PB × 3.5 = 8.4PB
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Cost Breakdown:</h4>
+                    <ul>
+                        <li><strong>Hardware:</strong> 8.4PB × $50/TB = $420,000</li>
+                        <li><strong>Infrastructure:</strong> Servers, networking = $150,000</li>
+                        <li><strong>Operational:</strong> Power, cooling, maintenance = $180,000/year</li>
+                        <li><strong>Personnel:</strong> DevOps, support = $300,000/year</li>
+                        <li><strong>Total:</strong> $1,050,000 first year</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="arcade-gaming" class="topic-section">
+            <div class="topic-header">🎮 Arcade/Gaming Systems</div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 1: Card Sensor System</div>
+                <div class="question-text">
+                    We have card for arcade games which you need to recharge to use or you can link with credit card. The sensor on the machine read this card and allow user to play if has enough money. We will add this sensor system to 125,000 machines. What are the concerns do you have in this approach?
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>What's the connectivity model - online or offline capable?</li>
+                        <li>How do we handle network failures and payments?</li>
+                        <li>What's the fraud prevention and security model?</li>
+                        <li>Are cards shared between different arcade locations?</li>
+                        <li>What's the expected transaction volume per machine?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🚨 Major Concerns:</h4>
+                    <ul>
+                        <li><strong>Network Reliability:</strong> 125K machines need constant connectivity</li>
+                        <li><strong>Payment Processing:</strong> Credit card transactions at scale</li>
+                        <li><strong>Fraud Prevention:</strong> Card cloning, charge-back protection</li>
+                        <li><strong>Offline Capability:</strong> Machines must work during network outages</li>
+                        <li><strong>Data Synchronization:</strong> Balance updates across all machines</li>
+                        <li><strong>Security:</strong> PCI compliance, encryption, tamper resistance</li>
+                    </ul>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Sample Reasonings & Mitigations:</h4>
+                    <ul>
+                        <li><strong>Hybrid Architecture:</strong> Online primary, offline backup mode</li>
+                        <li><strong>Local Balance Cache:</strong> Store encrypted balance on card</li>
+                        <li><strong>Batch Processing:</strong> Queue transactions during outages</li>
+                        <li><strong>Distributed Validation:</strong> Machine-to-machine verification</li>
+                        <li><strong>Fraud Detection:</strong> Real-time anomaly detection</li>
+                        <li><strong>Secure Hardware:</strong> HSM for encryption keys</li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 System Requirements:</h4>
+                    <p><strong>Functional:</strong> Process payments, track balances, prevent fraud</p>
+                    <p><strong>Non-Functional:</strong> 99.9% uptime, PCI compliance, low latency</p>
+                    <p><strong>Scale:</strong> 125K machines, millions of transactions daily</p>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Architecture:</h4>
+                    <p><strong>Central System:</strong> Microservices for payment processing</p>
+                    <p><strong>Edge Computing:</strong> Local servers in each arcade</p>
+                    <p><strong>Card Technology:</strong> NFC with secure element</p>
+                    <p><strong>Connectivity:</strong> 4G/5G with WiFi backup</p>
+                    <p><strong>Database:</strong> Distributed database with eventual consistency</p>
+                </div>
+                
+                <div class="highlight">
+                    <strong>Key Insight:</strong> Design for offline-first operation - machines must work even when disconnected
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Implementation Strategy:</h4>
+                    <ul>
+                        <li><strong>Pilot Program:</strong> Start with 1,000 machines to validate</li>
+                        <li><strong>Gradual Rollout:</strong> Phase deployment to manage risk</li>
+                        <li><strong>Fallback Plan:</strong> Maintain token-based system as backup</li>
+                        <li><strong>Security First:</strong> Implement end-to-end encryption</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 2: Tap Card Arcade</div>
+                <div class="question-text">
+                    Tap card arcade
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>What's the specific problem - designing the system or troubleshooting?</li>
+                        <li>How many locations and machines are involved?</li>
+                        <li>What's the current payment flow and technology stack?</li>
+                        <li>Are there specific performance or reliability issues?</li>
+                        <li>What's the budget and timeline for implementation?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🎯 System Design Considerations:</h4>
+                    <p><strong>User Experience:</strong> Fast, reliable tap-to-play experience</p>
+                    <p><strong>Technical Challenges:</strong> NFC reliability, payment processing, balance management</p>
+                    <p><strong>Business Requirements:</strong> Revenue tracking, fraud prevention, customer retention</p>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Tap Card System Design:</h4>
+                    <ul>
+                        <li><strong>NFC Cards:</strong> Contactless payment with secure element</li>
+                        <li><strong>Dual Storage:</strong> Balance on card + central database</li>
+                        <li><strong>Instant Response:</strong> <200ms transaction time</li>
+                        <li><strong>Offline Mode:</strong> Local balance validation</li>
+                        <li><strong>Real-time Sync:</strong> Background synchronization</li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 System Requirements:</h4>
+                    <p><strong>Functional:</strong> Tap-to-pay, balance management, game activation</p>
+                    <p><strong>Non-Functional:</strong> Sub-second response, 99.95% availability</p>
+                    <p><strong>Transaction-Heavy:</strong> Optimize for high-frequency small transactions</p>
+                </div>
+                
+                <div class="tech-stack">
+                    <h4>🛠️ Technical Stack:</h4>
+                    <p><strong>Cards:</strong> NFC-enabled smart cards with secure element</p>
+                    <p><strong>Readers:</strong> NFC readers with tamper detection</p>
+                    <p><strong>Gateway:</strong> Local payment gateway per location</p>
+                    <p><strong>Backend:</strong> Cloud-based balance management system</p>
+                    <p><strong>Analytics:</strong> Real-time transaction monitoring</p>
+                </div>
+                
+                <div class="highlight">
+                    <strong>Design Principle:</strong> Optimize for user experience - every tap should result in immediate game activation
+                </div>
+                
+                <div class="tradeoffs">
+                    <h4>⚖️ Implementation Approach:</h4>
+                    <ul>
+                        <li><strong>Card-First:</strong> Prioritize offline capability</li>
+                        <li><strong>Redundancy:</strong> Multiple validation methods</li>
+                        <li><strong>Monitoring:</strong> Real-time alerts for system issues</li>
+                        <li><strong>Scalability:</strong> Design for peak usage periods</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="video-processing" class="topic-section">
+            <div class="topic-header">🎥 Video Processing</div>
+            
+            <div class="question-variant">
+                <div class="question-title">Variant 1: Subtitle Generation Service</div>
+                <div class="question-text">
+                    We are working on a service that generates subtitles for users' videos. This process starts a new thread for every video and is processor-intensive. Currently, this service runs as a single process on a machine. We've run into a bug where if the service is processing more than 10 videos at the same time, the service crashes the server, losing all requests currently being processed and affecting other processes on the machine. It may take a long time to find and fix this bug. What workarounds could we implement to continue running the service while we do?
+                </div>
+                
+                <div class="clarifying-questions">
+                    <h4>🤔 Clarifying Questions:</h4>
+                    <ul>
+                        <li>What's the average video processing time?</li>
+                        <li>What's the current request volume and expected growth?</li>
+                        <li>Are there resource constraints - CPU, memory, or disk?</li>
+                        <li>What's the acceptable processing delay for users?</li>
+                        <li>Can we use multiple machines or must we work with current setup?</li>
+                    </ul>
+                </div>
+                
+                <div class="main-issues">
+                    <h4>🚨 Current Problems:</h4>
+                    <ul>
+                        <li><strong>Resource Exhaustion:</strong> Too many concurrent threads causing crashes</li>
+                        <li><strong>Work Loss:</strong> All progress lost when service crashes</li>
+                        <li><strong>System Impact:</strong> Crashes affect other processes on same machine</li>
+                        <li><strong>No Graceful Degradation:</strong> Hard limit causing complete failure</li>
+                        <li><strong>No Persistence:</strong> No way to resume interrupted work</li>
+                    </ul>
+                </div>
+                
+                <div class="solutions">
+                    <h4>✅ Immediate Workarounds:</h4>
+                    <ul>
+                        <li><strong>Concurrency Limit:</strong> Implement thread pool with max 8 threads</li>
+                        <li><strong>Request Queue:</strong> Queue incoming requests, process FIFO</li>
+                        <li><strong>Process Isolation:</strong> Run service in containerized environment</li>
+                        <li><strong>Checkpointing:</strong> Save progress periodically to resume work</li>
+                        <li><strong>Circuit Breaker:</strong> Stop accepting new requests when overloaded</li>
+                        <li><strong>Resource Monitoring:</strong> Monitor CPU/memory and throttle accordingly</li>
+                    </ul>
+                </div>
+                
+                <div class="requirements">
+                    <h4>📋 System Requirements:</h4>
+                    <p><strong>Functional:</strong> Generate subtitles, handle concurrent requests</p>
+                    <p><strong>Non-Functional:</strong> Fault tolerance, no work loss, system stability</p>
+                    <p><strong>CPU-Intensive:</strong> Optimize for computational efficiency</p>
+                </div>
+                
+            </div>
+        </div>
+
+        <div id="video-processing-2" class="topic-section">
+        <div class="question-title">Video Processing - Subtitle Generation Service</div>
+        <div class="question-text">
+            We are working on a service that generates subtitles for users' videos. This process starts a new thread for every video and is processor-intensive. Currently, this service runs as a single process on a machine. We've run into a bug where if the service is processing more than 10 videos at the same time, the service crashes the server, losing all requests currently being processed and affecting other processes on the machine. It may take a long time to find and fix this bug. What workarounds could we implement to continue running the service while we do?
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Clarifying Questions</div>
+            <div class="clarifying-questions">
+                <ul>
+                    <li>What's the average video length and processing time?</li>
+                    <li>What's the current throughput requirement (videos per hour)?</li>
+                    <li>Are there any SLA requirements for subtitle generation?</li>
+                    <li>Can we process videos asynchronously or does it need to be real-time?</li>
+                    <li>What's the server specification and resource utilization?</li>
+                    <li>Are there any budget constraints for additional infrastructure?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Main Sample Reasoning</div>
+            <div class="main-solution">
+                <p><strong>Immediate Workarounds:</strong></p>
+                <ol>
+                    <li><strong>Resource Isolation with Containers:</strong> Run each video processing task in a separate Docker container with resource limits (CPU, memory). This prevents one task from crashing the entire system.</li>
+                    <li><strong>Process Queue with Circuit Breaker:</strong> Implement a queue system (Redis/RabbitMQ) that limits concurrent processing to 8-9 videos (below the crash threshold). Use circuit breaker pattern to prevent system overload.</li>
+                    <li><strong>Horizontal Scaling:</strong> Deploy multiple instances of the service across different machines, each handling a subset of the load.</li>
+                    <li><strong>Graceful Degradation:</strong> Implement health checks and automatic service restart mechanisms to minimize downtime.</li>
+                </ol>
+                
+                <p><strong>Architecture:</strong></p>
+                <div class="code-block">
+Load Balancer → Queue System → Worker Nodes (Containerized)
+     ↓              ↓             ↓
+API Gateway → Redis Queue → [Worker1, Worker2, Worker3]
+                              ↓
+                         Database (Job Status)
+                </div>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">NFRs & FRs</div>
+            <div class="nfr-fr">
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Generate subtitles for uploaded videos</li>
+                    <li>Support multiple video formats</li>
+                    <li>Provide job status tracking</li>
+                    <li>Handle video upload and subtitle download</li>
+                </ul>
+                
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><span class="highlight">Reliability:</span> 99.9% uptime, fault tolerance</li>
+                    <li><span class="highlight">Scalability:</span> Handle varying loads, auto-scaling</li>
+                    <li><span class="highlight">Performance:</span> Process within reasonable time limits</li>
+                    <li><span class="highlight">Availability:</span> Service should remain available during peak loads</li>
+                    <li><span class="highlight">Consistency:</span> Eventual consistency for job status</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Trade-offs & Considerations</div>
+            <div class="tradeoffs">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Approach</th>
+                                <th>Pros</th>
+                                <th>Cons</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Containerization</td>
+                                <td>Resource isolation, easy deployment</td>
+                                <td>Overhead, complexity</td>
+                            </tr>
+                            <tr>
+                                <td>Queue System</td>
+                                <td>Controlled processing, fault tolerance</td>
+                                <td>Additional infrastructure, latency</td>
+                            </tr>
+                            <tr>
+                                <td>Horizontal Scaling</td>
+                                <td>Higher throughput, redundancy</td>
+                                <td>Higher costs, coordination complexity</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    <!-- Vending Machine Questions -->
+    <div id="vending-machines" class="topic-section">
+        <div class="question-title">Vending Machine - Internet-Connected Infrastructure</div>
+        <div class="question-text">
+            You're working on infrastructure for internet-connected vending machines. The plan is to install around 188,888 of these vending machines in the coming year, in major cities around the world. These machines will connect to the internet through cellular network. Each machine will connect to a central server at midnight to report remaining stock and any maintenance issues like coin jams or stuck items. These machine status updates will be stored in a database, and a batch job will run at 1 AM to schedule the restocking and maintenance of machines. Are there any problems with the above design? How to solve these problems?
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Clarifying Questions</div>
+            <div class="clarifying-questions">
+                <ul>
+                    <li>What's the data size for each machine's status report?</li>
+                    <li>Are there any real-time requirements for urgent maintenance issues?</li>
+                    <li>What's the acceptable downtime for maintenance scheduling?</li>
+                    <li>Are there regional compliance requirements for data storage?</li>
+                    <li>What's the budget for cellular connectivity and server infrastructure?</li>
+                    <li>Do machines need to support offline operation?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Problems Identified</div>
+            <div class="main-solution">
+                <p><strong>Major Issues:</strong></p>
+                <ol>
+                    <li><strong>Thundering Herd Problem:</strong> All 188,888 machines connecting simultaneously at midnight will overwhelm the server</li>
+                    <li><strong>Single Point of Failure:</strong> Central server failure affects all machines globally</li>
+                    <li><strong>Time Zone Complexity:</strong> "Midnight" varies across global locations</li>
+                    <li><strong>Network Congestion:</strong> Cellular networks may struggle with simultaneous connections</li>
+                    <li><strong>Database Bottleneck:</strong> Batch processing of ~189K records at once</li>
+                    <li><strong>Maintenance Scheduling Delay:</strong> 1-hour gap between reporting and scheduling</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Proposed Sample Reasonings</div>
+            <div class="main-solution">
+                <p><strong>Architecture Improvements:</strong></p>
+                <ol>
+                    <li><strong>Distributed Regional Architecture:</strong>
+                        <ul>
+                            <li>Regional data centers with local servers</li>
+                            <li>Machines connect to nearest regional server</li>
+                            <li>Data replication between regions</li>
+                        </ul>
+                    </li>
+                    <li><strong>Staggered Reporting Schedule:</strong>
+                        <ul>
+                            <li>Distribute connections across 2-3 hour window</li>
+                            <li>Use machine ID hash to determine reporting slot</li>
+                            <li>Implement exponential backoff for failed connections</li>
+                        </ul>
+                    </li>
+                    <li><strong>Event-Driven Processing:</strong>
+                        <ul>
+                            <li>Real-time processing for critical issues</li>
+                            <li>Stream processing for continuous updates</li>
+                            <li>Batch processing for bulk operations</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="code-block">
+Machines → Regional Load Balancer → Regional Server Cluster
+    ↓              ↓                        ↓
+Message Queue → Stream Processor → Database Cluster
+    ↓              ↓                        ↓
+Priority Queue → Maintenance Scheduler → Notification Service
+                </div>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">NFRs & FRs</div>
+            <div class="nfr-fr">
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Collect machine status reports (inventory, maintenance issues)</li>
+                    <li>Schedule restocking and maintenance</li>
+                    <li>Handle global deployment across time zones</li>
+                    <li>Support offline operation and data synchronization</li>
+                </ul>
+                
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><span class="highlight-other">Scalability:</span> Handle 188K+ machines with linear growth</li>
+                    <li><span class="highlight-other">Availability:</span> 99.9% uptime, regional redundancy</li>
+                    <li><span class="highlight-other">Performance:</span> Handle concurrent connections efficiently</li>
+                    <li><span class="highlight-other">Consistency:</span> Eventual consistency for non-critical updates</li>
+                    <li><span class="highlight-other">Reliability:</span> Message delivery guarantees, retry mechanisms</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Trade-offs & Considerations</div>
+            <div class="tradeoffs">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sample Reasoning</th>
+                                <th>Pros</th>
+                                <th>Cons</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Regional Architecture</td>
+                                <td>Reduced latency, fault isolation</td>
+                                <td>Higher complexity, data consistency challenges</td>
+                            </tr>
+                            <tr>
+                                <td>Staggered Reporting</td>
+                                <td>Smooth load distribution</td>
+                                <td>Delayed insights, implementation complexity</td>
+                            </tr>
+                            <tr>
+                                <td>Stream Processing</td>
+                                <td>Real-time insights, better resource utilization</td>
+                                <td>Higher infrastructure costs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Game Analysis Questions -->
+    <div id="mobile-games" class="topic-section">
+        <div class="question-title">Mobile Game Analysis - Go Game Analysis</div>
+        <div class="question-text">
+            We are working on a mobile app for the board game Go. We'd like to add a feature where the computer will analyze a complete game. The analysis looks at each position from the game and provides suggested moves to help improve our users' play. We've found a library we can use to do this analysis. It takes an average of a minute on a modern desktop computer to analyze entire game. An average game consists of about 200 moves. We are considering two approaches: 1) running this analysis on the phone itself, and 2) sending the game to a server farm for analysis that will be returned to the user. What are some advantages or disadvantages of each approach?
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Clarifying Questions</div>
+            <div class="clarifying-questions">
+                <ul>
+                    <li>What's the target device specification range (low-end to high-end)?</li>
+                    <li>How frequently do users request game analysis?</li>
+                    <li>Are there any real-time requirements for analysis results?</li>
+                    <li>What's the acceptable battery drain for mobile processing?</li>
+                    <li>Are there any privacy concerns with sending game data to servers?</li>
+                    <li>What's the expected user base and concurrent analysis requests?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Comparative Analysis</div>
+            <div class="main-solution">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Mobile Processing</th>
+                                <th>Server Processing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Performance</strong></td>
+                                <td>Varies by device (2-10 minutes)</td>
+                                <td>Consistent (30-60 seconds)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Battery Impact</strong></td>
+                                <td>High CPU usage, significant drain</td>
+                                <td>Minimal, just network activity</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Network Dependency</strong></td>
+                                <td>None required</td>
+                                <td>Requires stable internet</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Privacy</strong></td>
+                                <td>Complete data privacy</td>
+                                <td>Data transmitted to servers</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cost</strong></td>
+                                <td>No ongoing costs</td>
+                                <td>Server infrastructure costs</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Scalability</strong></td>
+                                <td>Scales with user devices</td>
+                                <td>Requires capacity planning</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Recommended Hybrid Approach</div>
+            <div class="main-solution">
+                <p><strong>Adaptive Processing Strategy:</strong></p>
+                <ol>
+                    <li><strong>Device Classification:</strong>
+                        <ul>
+                            <li>High-end devices: Mobile processing with user choice</li>
+                            <li>Mid-range devices: Server processing by default</li>
+                            <li>Low-end devices: Server processing only</li>
+                        </ul>
+                    </li>
+                    <li><strong>Progressive Analysis:</strong>
+                        <ul>
+                            <li>Quick analysis (key moves) on mobile</li>
+                            <li>Detailed analysis on server</li>
+                            <li>Cached results for common patterns</li>
+                        </ul>
+                    </li>
+                    <li><strong>Intelligent Queueing:</strong>
+                        <ul>
+                            <li>Priority queues for paying users</li>
+                            <li>Background processing for free users</li>
+                            <li>Load balancing across server clusters</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">NFRs & FRs</div>
+            <div class="nfr-fr">
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Analyze complete Go games (200+ moves)</li>
+                    <li>Provide move suggestions and position evaluation</li>
+                    <li>Support both mobile and server processing</li>
+                    <li>Handle various game formats and rule sets</li>
+                </ul>
+                
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><span class="highlight-other">Performance:</span> Analysis completion within 2-5 minutes</li>
+                    <li><span class="highlight-other">Scalability:</span> Handle thousands of concurrent analyses</li>
+                    <li><span class="highlight-other">Availability:</span> 99.5% uptime for server processing</li>
+                    <li><span class="highlight-other">Usability:</span> Seamless user experience across devices</li>
+                    <li><span class="highlight">Efficiency:</span> Minimal battery drain on mobile devices</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Architecture Considerations</div>
+            <div class="tradeoffs">
+                <div class="code-block">
+Mobile App → Load Balancer → Analysis Service Cluster
+    ↓              ↓                    ↓
+Device Check → Queue Manager → [Worker Nodes]
+    ↓              ↓                    ↓
+Local/Remote → Priority Queue → Result Cache
+Decision           ↓                    ↓
+                 Database → Push Notification Service
+                </div>
+                
+                <p><strong>Key Components:</strong></p>
+                <ul>
+                    <li><strong>Analysis Engine:</strong> Containerized Go analysis library</li>
+                    <li><strong>Queue System:</strong> Redis/RabbitMQ for job management</li>
+                    <li><strong>Caching Layer:</strong> Redis for common game patterns</li>
+                    <li><strong>Notification Service:</strong> Push notifications for completion</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Sharing Questions -->
+    <div id="photo-sharing" class="topic-section">
+        <div class="question-title">Photo Sharing - Alphabetical Username Sharding</div>
+        <div class="question-text">
+            We are running a simple photo storage and sharing service. People upload their photos to our servers and then give links to other users who can then view them. We're trying to figure out how to split the photos and associated data evenly onto multiple machines, especially as we get new users. We've decided to shard the photos evenly alphabetically by username. For example, if we had 26 servers, all the usernames starting with 'a' would be on server 1, usernames starting with 'b' would be on server 2, and so on. We have created a scheme like this that will work for any number of servers. Are there any problems with this design? How to solve these?
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Clarifying Questions</div>
+            <div class="clarifying-questions">
+                <ul>
+                    <li>What's the expected user growth rate and photo upload frequency?</li>
+                    <li>Are there any geographic distribution requirements?</li>
+                    <li>What's the average photo size and storage requirements?</li>
+                    <li>Are there any requirements for data replication or backups?</li>
+                    <li>What's the read vs write ratio for the application?</li>
+                    <li>Are there any compliance requirements for data location?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Problems with Alphabetical Sharding</div>
+            <div class="main-solution">
+                <p><strong>Major Issues:</strong></p>
+                <ol>
+                    <li><strong>Uneven Distribution:</strong> Names starting with certain letters are more common (e.g., 'S', 'M', 'C') leading to hotspots</li>
+                    <li><strong>Predictable Patterns:</strong> Usernames often follow patterns (company names, common words) causing skewed distribution</li>
+                    <li><strong>Limited Scalability:</strong> Adding new servers requires resharding significant portions of data</li>
+                    <li><strong>Cultural Bias:</strong> Distribution varies significantly across languages and cultures</li>
+                    <li><strong>Gaming Vulnerability:</strong> Users could exploit the system by choosing usernames strategically</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Better Sharding Strategies</div>
+            <div class="main-solution">
+                <p><strong>Recommended Approaches:</strong></p>
+                <ol>
+                    <li><strong>Consistent Hashing:</strong>
+                        <ul>
+                            <li>Hash username to get uniform distribution</li>
+                            <li>Easy to add/remove servers with minimal data movement</li>
+                            <li>Use SHA-256 or similar for even distribution</li>
+                        </ul>
+                    </li>
+                    <li><strong>Range-based Sharding with Monitoring:</strong>
+                        <ul>
+                            <li>Monitor shard sizes and rebalance when needed</li>
+                            <li>Use consistent hashing for automatic rebalancing</li>
+                            <li>Implement shard splitting when threshold is reached</li>
+                        </ul>
+                    </li>
+                    <li><strong>Hybrid Approach:</strong>
+                        <ul>
+                            <li>Use consistent hashing for user data</li>
+                            <li>Separate sharding strategy for photos (by ID or date)</li>
+                            <li>Implement cross-references for data location</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="code-block">
+Username → Hash Function → Shard Selection
+    ↓              ↓              ↓
+"john_doe" → SHA-256 → hash % num_shards = shard_id
+    ↓              ↓              ↓
+Load Balancer → Consistent Hash Ring → Target Server
+                </div>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">NFRs & FRs</div>
+            <div class="nfr-fr">
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Store and retrieve photos for users</li>
+                    <li>Generate shareable links for photos</li>
+                    <li>Support user authentication and authorization</li>
+                    <li>Handle photo metadata and organization</li>
+                </ul>
+                
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><span class="highlight-other">Scalability:</span> Handle millions of users and photos</li>
+                    <li><span class="highlight-other">Availability:</span> 99.9% uptime for photo access</li>
+                    <li><span class="highlight-other">Performance:</span> Fast photo upload/download times</li>
+                    <li><span class="highlight-other">Consistency:</span> Eventual consistency for non-critical metadata</li>
+                    <li><span class="highlight-other">Durability:</span> Photos should never be lost</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Architecture Design</div>
+            <div class="tradeoffs">
+                <div class="code-block">
+Client → CDN → Load Balancer → API Gateway
+  ↓        ↓         ↓              ↓
+Upload → Cache → Auth Service → User Service
+  ↓        ↓         ↓              ↓
+Storage → Metadata DB → Consistent Hash Ring
+  ↓        ↓         ↓              ↓
+[Photo Storage Shards] → [User Data Shards]
+                </div>
+                
+                <p><strong>Key Components:</strong></p>
+                <ul>
+                    <li><strong>Consistent Hash Ring:</strong> Even distribution and easy scaling</li>
+                    <li><strong>Photo Storage:</strong> Separate sharding by photo ID or date</li>
+                    <li><strong>Metadata Database:</strong> Stores user-photo relationships</li>
+                    <li><strong>CDN:</strong> Global distribution for faster access</li>
+                    <li><strong>Replication:</strong> Multiple copies for durability</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crossword Puzzle Questions -->
+    <div id="crossword-puzzle" class="topic-section">
+        <div class="question-title">Crossword Puzzle - Hints Storage Strategy</div>
+        <div class="question-text">
+            Given a crossword puzzle gaming application which is giving hints to users, what are the advantages and disadvantages of both following approaches: -fetching hints from server -preloading hints on device
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Clarifying Questions</div>
+            <div class="clarifying-questions">
+                <ul>
+                    <li>What's the total size of all hints data?</li>
+                    <li>How frequently are hints updated or new puzzles added?</li>
+                    <li>Are there different difficulty levels requiring different hint sets?</li>
+                    <li>What's the target device storage capacity?</li>
+                    <li>Are there offline usage requirements?</li>
+                    <li>What's the user engagement pattern (daily vs occasional)?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Comparative Analysis</div>
+            <div class="main-solution">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Server Fetching</th>
+                                <th>Device Preloading</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Storage</strong></td>
+                                <td>Minimal device storage</td>
+                                <td>Significant storage required</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Network</strong></td>
+                                <td>Requires internet connection</td>
+                                <td>Only for updates</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Performance</strong></td>
+                                <td>Network latency for each request</td>
+                                <td>Instant access</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Updates</strong></td>
+                                <td>Real-time updates possible</td>
+                                <td>Requires app updates</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Freshness</strong></td>
+                                <td>Always up-to-date</td>
+                                <td>May be stale</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Offline Support</strong></td>
+                                <td>Not available</td>
+                                <td>Full offline capability</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bandwidth Usage</strong></td>
+                                <td>Continuous small requests</td>
+                                <td>Large initial download</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Server Load</strong></td>
+                                <td>High, scales with users</td>
+                                <td>Low, mainly for updates</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Recommended Hybrid Approach</div>
+            <div class="main-solution">
+                <p><strong>Intelligent Caching Strategy:</strong></p>
+                <ol>
+                    <li><strong>Tiered Storage:</strong>
+                        <ul>
+                            <li>Core hints (most common) preloaded on device</li>
+                            <li>Extended hints fetched on-demand</li>
+                            <li>Personalized hints based on user behavior</li>
+                        </ul>
+                    </li>
+                    <li><strong>Predictive Caching:</strong>
+                        <ul>
+                            <li>Cache hints for puzzles likely to be played</li>
+                            <li>Background sync during Wi-Fi connection</li>
+                            <li>User preference-based caching</li>
+                        </ul>
+                    </li>
+                    <li><strong>Adaptive Strategy:</strong>
+                        <ul>
+                            <li>Monitor device storage and network conditions</li>
+                            <li>Adjust caching strategy based on usage patterns</li>
+                            <li>Implement cache expiration and cleanup</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">NFRs & FRs</div>
+            <div class="nfr-fr">
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Provide hints for crossword puzzles</li>
+                    <li>Support offline usage</li>
+                    <li>Handle frequent updates and new puzzles</li>
+                    <li>Optimize for various device storage capacities</li>
+                </ul>
+                
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><span class="highlight-other">Performance:</span> Instant hint access for preloaded hints</li>
+                    <li><span class="highlight-other">Scalability:</span> Handle millions of users and puzzles</li>
+                    <li><span class="highlight-other">Availability:</span> 99.9% uptime for server fetching</li>
+                    <li><span class="highlight-other">Usability:</span> Seamless user experience across devices</li>
+                    <li><span class="highlight">Efficiency:</span> Minimal device storage usage</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Architecture Design</div>
+            <div class="tradeoffs">
+                <div class="code-block">
+App Launch → Check Cache → Fetch Missing Hints
+    ↓              ↓              ↓
+Device Storage → Local DB → Server API
+    ↓              ↓              ↓
+Cache Manager → Sync Service → Background Updates
+                </div>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">NFRs & FRs</div>
+            <div class="nfr-fr">
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Provide hints for crossword puzzles</li>
+                    <li>Support multiple difficulty levels</li>
+                    <li>Handle hint categories and tags</li>
+                    <li>Support offline gameplay</li>
+                </ul>
+                
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><span class="highlight-other">Performance:</span> Instant hint delivery (< 100ms)</li>
+                    <li><span class="highlight-other">Availability:</span> 99.5% uptime for hint service</li>
+                    <li><span class="highlight-other">Scalability:</span> Support millions of concurrent users</li>
+                    <li><span class="highlight-other">Efficiency:</span> Minimal bandwidth and storage usage</li>
+                    <li><span class="highlight-other">Reliability:</span> Consistent hint quality and accuracy</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Implementation Strategy</div>
+            <div class="tradeoffs">
+                <p><strong>Cache Management:</strong></p>
+                <ul>
+                    <li><strong>LRU Cache:</strong> Keep most recently used hints</li>
+                    <li><strong>Size Limits:</strong> Configurable cache size based on device</li>
+                    <li><strong>Background Sync:</strong> Update cache during idle time</li>
+                    <li><strong>Compression:</strong> Reduce storage footprint</li>
+                </ul>
+                
+                <p><strong>Network Optimization:</strong></p>
+                <ul>
+                    <li><strong>Batch Requests:</strong> Fetch multiple hints together</li>
+                    <li><strong>Delta Updates:</strong> Only sync changed hints</li>
+                    <li><strong>CDN Integration:</strong> Global distribution for faster access</li>
+                    <li><strong>Fallback Mechanisms:</strong> Graceful degradation without hints</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- XML Processing Questions -->
+    <div id="xml-processing" class="topic-section">
+        <div class="question-title">XML Processing - Large File Processing</div>
+        <div class="question-text">
+            A huge XML file with sales data needs to be processed. It is huge enough that it cannot be loaded at once given the RAM limitation of the local system. How can we process it?
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Clarifying Questions</div>
+            <div class="clarifying-questions">
+                <ul>
+                    <li>What's the approximate file size and RAM limitations?</li>
+                    <li>What type of processing is required (aggregation, transformation, filtering)?</li>
+                    <li>Are there any real-time processing requirements?</li>
+                    <li>Is the XML structure known and consistent?</li>
+                    <li>Can the file be preprocessed or split beforehand?</li>
+                    <li>Are there any accuracy requirements (100% vs approximate)?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Processing Strategies</div>
+            <div class="main-solution">
+                <p><strong>Streaming-Based Approaches:</strong></p>
+                <ol>
+                    <li><strong>SAX Parser (Event-driven):</strong>
+                        <ul>
+                            <li>Process XML elements as they are read</li>
+                            <li>Memory usage remains constant</li>
+                            <li>Suitable for sequential processing</li>
+                        </ul>
+                    </li>
+                    <li><strong>StAX Parser (Pull-based):</strong>
+                        <ul>
+                            <li>More control over parsing process</li>
+                            <li>Can pause/resume processing</li>
+                            <li>Better for complex logic</li>
+                        </ul>
+                    </li>
+                    <li><strong>Custom Chunking:</strong>
+                        <ul>
+                            <li>Split file into smaller chunks</li>
+                            <li>Process each chunk independently</li>
+                            <li>Merge results at the end</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <div class="code-block">
+Large XML File → Stream Parser → Processing Logic
+     ↓               ↓               ↓
+File Reader → Event Handler → Aggregator/Transformer
+     ↓               ↓               ↓
+Memory Buffer → Partial Results → Final Output
+                </div>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Detailed Implementation</div>
+            <div class="main-solution">
+                <p><strong>SAX Parser Implementation:</strong></p>
+                <div class="code-block">
+// Pseudo-code for SAX processing
+class SalesDataHandler extends SAXHandler {
+    private aggregator = new DataAggregator();
+    private currentRecord = new SalesRecord();
+    
+    onStartElement(element) {
+        if (element == "sale") {
+            currentRecord = new SalesRecord();
+        }
+    }
+    
+    onEndElement(element) {
+        if (element == "sale") {
+            aggregator.process(currentRecord);
+            currentRecord = null; // Free memory
+        }
+    }
+    
+    onCharacters(data) {
+        currentRecord.addData(data);
+    }
+}
+                </div>
+                
+                <p><strong>Alternative Approaches:</strong></p>
+                <ul>
+                    <li><strong>MapReduce:</strong> For distributed processing across multiple machines</li>
+                    <li><strong>Database Streaming:</strong> Load data directly into database using bulk operations</li>
+                    <li><strong>External Sorting:</strong> For operations requiring sorted data</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">NFRs & FRs</div>
+            <div class="nfr-fr">
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Process large XML files without loading entirely into memory</li>
+                    <li>Support various processing operations (aggregation, filtering, transformation)</li>
+                    <li>Handle malformed XML gracefully</li>
+                    <li>Provide progress tracking and resumability</li>
+                </ul>
+                
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><span class="highlight-other">Memory Efficiency:</span> Constant memory usage regardless of file size</li>
+                    <li><span class="highlight-other">Performance:</span> Process files in reasonable time</li>
+                    <li><span class="highlight-other">Scalability:</span> Handle files of any size</li>
+                    <li><span class="highlight-other">Reliability:</span> Recover from processing errors</li>
+                    <li><span class="highlight-other">Accuracy:</span> Maintain data integrity during processing</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Performance Optimizations</div>
+            <div class="tradeoffs">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Technique</th>
+                                <th>Memory Usage</th>
+                                <th>Processing Speed</th>
+                                <th>Complexity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SAX Parser</td>
+                                <td>Very Low</td>
+                                <td>Fast</td>
+                                <td>Medium</td>
+                            </tr>
+                            <tr>
+                                <td>StAX Parser</td>
+                                <td>Low</td>
+                                <td>Medium</td>
+                                <td>High</td>
+                            </tr>
+                            <tr>
+                                <td>File Chunking</td>
+                                <td>Medium</td>
+                                <td>Variable</td>
+                                <td>Low</td>
+                            </tr>
+                            <tr>
+                                <td>Parallel Processing</td>
+                                <td>Medium</td>
+                                <td>Very Fast</td>
+                                <td>High</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- URL Processing Questions -->
+    <div id="url-processing" class="topic-section">
+        <div class="question-title">URL Processing - Smart Engine Service Budget</div>
+        <div class="question-text">
+            Given a smart engine service which takes URLs from users and processes out some useful data from it. You have to plan the budget of this project. What things you will take into consideration? Expectations were basically, what things you will ask client to figure out capacity estimation parameters.
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Clarifying Questions</div>
+            <div class="clarifying-questions">
+                <ul>
+                    <li>What's the expected number of URLs processed per day/hour?</li>
+                    <li>What's the average processing time per URL?</li>
+                    <li>What type of data extraction is required (text, images, metadata)?</li>
+                    <li>Are there any SLA requirements for processing time?</li>
+                    <li>What's the expected user base and growth trajectory?</li>
+                    <li>Are there any compliance or legal requirements?</li>
+                    <li>What's the acceptable downtime and error rates?</li>
+                    <li>Are there any geographic distribution requirements?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Capacity Estimation Parameters</div>
+            <div class="main-solution">
+                <p><strong>Core Metrics to Gather:</strong></p>
+                <ol>
+                    <li><strong>Traffic Patterns:</strong>
+                        <ul>
+                            <li>Peak requests per second (RPS)</li>
+                            <li>Average requests per day</li>
+                            <li>Seasonal variations and growth projections</li>
+                            <li>Geographic distribution of users</li>
+                        </ul>
+                    </li>
+                    <li><strong>Processing Requirements:</strong>
+                        <ul>
+                            <li>Average URL response time and size</li>
+                            <li>Processing complexity (CPU, memory, I/O intensive)</li>
+                            <li>Storage requirements for processed data</li>
+                            <li>Caching potential and hit rates</li>
+                        </ul>
+                    </li>
+                    <li><strong>Quality Requirements:</strong>
+                        <ul>
+                            <li>Availability SLA (99.9%, 99.99%)</li>
+                            <li>Response time requirements</li>
+                            <li>Error tolerance levels</li>
+                            <li>Data retention policies</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Budget Components</div>
+            <div class="main-solution">
+                <p><strong>Infrastructure Costs:</strong></p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Cost Factors</th>
+                                <th>Estimation Method</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Compute Resources</td>
+                                <td>CPU, Memory, Number of instances</td>
+                                <td>RPS × Processing time × Resource requirements</td>
+                            </tr>
+                            <tr>
+                                <td>Storage</td>
+                                <td>Data size, Retention period, Replication</td>
+                                <td>Daily data × Retention days × Replication factor</td>
+                            </tr>
+                            <tr>
+                                <td>Network</td>
+                                <td>Bandwidth, CDN, Data transfer</td>
+                                <td>Request size × RPS × Geographic distribution</td>
+                            </tr>
+                            <tr>
+                                <td>Database</td>
+                                <td>Read/Write operations, Storage</td>
+                                <td>Query complexity × Transaction volume</td>
+                            </tr>
+                            <tr>
+                                <td>Monitoring</td>
+                                <td>Metrics, Logging, Alerting</td>
+                                <td>5-10% of total infrastructure cost</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Sample Calculation</div>
+            <div class="main-solution">
+                <p><strong>Example Scenario:</strong></p>
+                <div class="code-block">
+Assumptions:
+- 1M URLs per day (average)
+- 10 seconds average processing time per URL
+- Peak traffic: 3x average (during business hours)
+- 99.9% availability requirement
+- 30-day data retention
+
+Calculations:
+- Peak RPS: 1M / (24*3600) * 3 = ~35 RPS
+- Concurrent processing: 35 * 10 = 350 concurrent jobs
+- Server capacity: 350 jobs / 10 jobs per server = 35 servers
+- With redundancy (2x): 70 servers
+- Storage: 1M URLs * 50KB per result * 30 days = 1.5TB
+- Network: 1M * 100KB average page size = 100GB/day
+                </div>
+                
+                <p><strong>Cost Breakdown (Monthly):</strong></p>
+                <ul>
+                    <li><strong>Compute:</strong> 70 servers × $100/month = $7,000</li>
+                    <li><strong>Storage:</strong> 1.5TB × $50/TB = $75</li>
+                    <li><strong>Network:</strong> 3TB × $20/TB = $60</li>
+                    <li><strong>Database:</strong> $500 (managed service)</li>
+                    <li><strong>Monitoring:</strong> $400</li>
+                    <li><strong>Total:</strong> ~$8,000/month</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">NFRs & FRs</div>
+            <div class="nfr-fr">
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Accept URLs from users for processing</li>
+                    <li>Extract useful data from web pages</li>
+                    <li>Store and provide processed results</li>
+                    <li>Handle various content types and formats</li>
+                </ul>
+                
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><span class="highlight-other">Scalability:</span> Handle varying loads efficiently</li>
+                    <li><span class="highlight-other">Performance:</span> Process URLs within acceptable timeframes</li>
+                    <li><span class="highlight-other">Availability:</span> Meet SLA requirements</li>
+                    <li><span class="highlight-other">Cost Efficiency:</span> Optimize resource utilization</li>
+                    <li><span class="highlight-other">Reliability:</span> Consistent service quality</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Cost Optimization Strategies</div>
+            <div class="tradeoffs">
+                <p><strong>Optimization Techniques:</strong></p>
+                <ul>
+                    <li><strong>Auto-scaling:</strong> Scale resources based on demand</li>
+                    <li><strong>Caching:</strong> Cache frequently requested URLs</li>
+                    <li><strong>Queue Management:</strong> Batch processing during off-peak hours</li>
+                    <li><strong>Tiered Processing:</strong> Different service levels for different users</li>
+                    <li><strong>Reserved Instances:</strong> Long-term commitments for cost savings</li>
+                    <li><strong>Spot Instances:</strong> Use cheaper compute for non-critical workloads</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social Media Scaling Questions -->
+    <div id="social-media-scaling" class="topic-section">
+        <div class="question-title">Social Media Scaling - International Expansion</div>
+        <div class="question-text">
+            A social media app is expanding from US to international regions. What are the things to keep in mind?
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Clarifying Questions</div>
+            <div class="clarifying-questions">
+                <ul>
+                    <li>Which regions are being targeted for expansion?</li>
+                    <li>What's the current user base and infrastructure capacity?</li>
+                    <li>Are there any specific features popular in target regions?</li>
+                    <li>What's the budget and timeline for expansion?</li>
+                    <li>Are there any regulatory compliance requirements?</li>
+                    <li>What's the expected user growth in new regions?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Technical Considerations</div>
+            <div class="main-solution">
+                <p><strong>Infrastructure Scaling:</strong></p>
+                <ol>
+                    <li><strong>Geographic Distribution:</strong>
+                        <ul>
+                            <li>Deploy regional data centers for reduced latency</li>
+                            <li>Implement CDN for static content delivery</li>
+                            <li>Use edge computing for real-time features</li>
+                        </ul>
+                    </li>
+                    <li><strong>Data Management:</strong>
+                        <ul>
+                            <li>Data residency requirements (GDPR, local laws)</li>
+                            <li>Cross-region replication strategies</li>
+                            <li>Database sharding by geographic regions</li>
+                        </ul>
+                    </li>
+                    <li><strong>Network Optimization:</strong>
+                        <ul>
+                            <li>Optimize for different network conditions</li>
+                            <li>Implement adaptive bitrate for media content</li>
+                            <li>Handle varying connectivity patterns</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Localization & Cultural Adaptation</div>
+            <div class="main-solution">
+                <p><strong>Key Areas:</strong></p>
+                <ol>
+                    <li><strong>Language Support:</strong>
+                        <ul>
+                            <li>Multi-language UI and content</li>
+                            <li>Right-to-left language support</li>
+                            <li>Character encoding for different scripts</li>
+                        </ul>
+                    </li>
+                    <li><strong>Cultural Considerations:</strong>
+                        <ul>
+                            <li>Local content moderation policies</li>
+                            <li>Regional social norms and preferences</li>
+                            <li>Local payment methods and currencies</li>
+                        </ul>
+                    </li>
+                    <li><strong>Regulatory Compliance:</strong>
+                        <ul>
+                            <li>Data privacy laws (GDPR, CCPA equivalents)</li>
+                            <li>Content regulation requirements</li>
+                            <li>Local business registration and taxes</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Architecture Considerations</div>
+            <div class="main-solution">
+                <div class="code-block">
+Global Load Balancer → Regional Clusters
+        ↓                    ↓
+    DNS Routing → [US, EU, APAC, LATAM]
+        ↓                    ↓
+    CDN Network → Regional Services
+        ↓                    ↓
+```
+</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTopBtn" title="Back to Top">↑ Top</button>
+    <script>
+        // Get the button
+        var backToTopBtn = document.getElementById("backToTopBtn");
+
+        // When the user scrolls down 200px from the top, show the button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                backToTopBtn.style.display = "block";
+            } else {
+                backToTopBtn.style.display = "none";
+            }
+        };
+
+        // When the user clicks on the button, scroll to the top
+        backToTopBtn.onclick = function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        };
+    </script>
+</body>
+</html>
+Content Delivery → User Data (Localized)
+        ↓                    ↓
+    Media Storage → Compliance Layer
+                </div>
+                
+                <p><strong>Key Components:</strong></p>
+                <ul>
+                    <li><strong>Global Load Balancer:</strong> Route users to nearest region</li>
+                    <li><strong>Regional Clusters:</strong> Independent deployments per region</li>
+                    <li><strong>Data Synchronization:</strong> Cross-region user data sync</li>
+                    <li><strong>Compliance Layer:</strong> Region-specific rules and filtering</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">NFRs & FRs</div>
+            <div class="nfr-fr">
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Support multiple languages and locales</li>
+                    <li>Handle regional content preferences</li>
+                    <li>Implement local payment and monetization</li>
+                    <li>Provide region-specific features</li>
+                </ul>
+                
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><span class="highlight-other">Performance:</span> Low latency in all regions (< 200ms)</li>
+                    <li><span class="highlight-other">Scalability:</span> Handle regional user growth</li>
+                    <li><span class="highlight-other">Availability:</span> 99.9% uptime globally</li>
+                    <li><span class="highlight-other">Compliance:</span> Meet all regional regulations</li>
+                    <li><span class="highlight-other">Consistency:</span> Unified user experience across regions</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="solution-section">
+            <div class="section-header">Implementation Strategy</div>
+            <div class="tradeoffs">
+                <p><strong>Phased Rollout:</strong></p>
+                <ol>
+                    <li><strong>Phase 1:</strong> Infrastructure setup and basic localization</li>
+                    <li><strong>Phase 2:</strong> Regional beta testing and compliance</li>
+                    <li><strong>Phase 3:</strong> Full launch with marketing and support</li>
+                    <li><strong>Phase 4:</strong> Feature optimization and local partnerships</li>
+                </ol>
+                
+                <p><strong>Risk Mitigation:</strong></p>
+                <ul>
+                    <li><strong>Canary Deployments:</strong> Gradual rollout to minimize risk</li>
+                    <li><strong>Monitoring:</strong> Region-specific metrics and alerting</li>
+                    <li><strong>Backup Plans:</strong> Ability to route traffic back to US</li>
+                    <li><strong>Local Support:</strong> Regional customer service teams</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="social-media" class="topic-section">
+        <div class="topic-header">📱 Social Media Scaling</div>
+        
+        <div class="question-variant">
+            <div class="question-title">Variant 1: College App International Expansion</div>
+            <div class="question-text">
+                Given a social media app for college students, successfully running in US. How you will scale it to release worldwide?
+            </div>
+            
+            <div class="clarifying-questions">
+                <h4>🤔 Clarifying Questions:</h4>
+                <ul>
+                    <li>What's the current user base and DAU in the US?</li>
+                    <li>Which regions are we targeting first - Europe, Asia, or global?</li>
+                    <li>Are there region-specific features needed (language, cultural)?</li>
+                    <li>What's the current architecture - monolith or microservices?</li>
+                    <li>Do we need to comply with data residency laws (GDPR, etc.)?</li>
+                    <li>What's the expected user growth rate per region?</li>
+                </ul>
+            </div>
+            
+            <div class="main-issues">
+                <h4>🎯 Main Challenges:</h4>
+                <ul>
+                    <li><strong>Latency:</strong> Single US data center creates high latency for global users</li>
+                    <li><strong>Compliance:</strong> GDPR, data residency laws in different countries</li>
+                    <li><strong>Cultural Adaptation:</strong> Different social norms and college systems</li>
+                    <li><strong>Infrastructure:</strong> Need multi-region deployment</li>
+                    <li><strong>Content Moderation:</strong> Different languages and cultural contexts</li>
+                </ul>
+            </div>
+            
+            <div class="solutions">
+                <h4>✅ Scaling Sample Reasonings:</h4>
+                <ul>
+                    <li><strong>Geographic Distribution:</strong> Deploy to multiple AWS/GCP regions (US-East, EU-West, Asia-Pacific)</li>
+                    <li><strong>CDN Implementation:</strong> CloudFront/CloudFlare for static content delivery</li>
+                    <li><strong>Database Sharding:</strong> Shard by region/university to reduce cross-region queries</li>
+                    <li><strong>Microservices Architecture:</strong> Break down monolith for independent scaling</li>
+                    <li><strong>Localization Service:</strong> Separate service for multi-language support</li>
+                    <li><strong>Regional Load Balancers:</strong> Route users to nearest data center</li>
+                </ul>
+            </div>
+            
+            <div class="requirements">
+                <h4>📋 System Requirements:</h4>
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>User registration and authentication</li>
+                    <li>Post creation, sharing, and commenting</li>
+                    <li>Real-time messaging and notifications</li>
+                    <li>University-specific groups and events</li>
+                    <li>Multi-language support</li>
+                </ul>
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><strong>Availability:</strong> 99.9% uptime globally</li>
+                    <li><strong>Latency:</strong> <200ms for feed loading, <500ms for posting</li>
+                    <li><strong>Scalability:</strong> Support 10M+ users across regions</li>
+                    <li><strong>Consistency:</strong> Eventual consistency for feeds, strong for user data</li>
+                </ul>
+            </div>
+            
+            <div class="tech-stack">
+                <h4>🛠️ Recommended Architecture:</h4>
+                <p><strong>API Gateway:</strong> Amazon API Gateway with regional endpoints</p>
+                <p><strong>Application Layer:</strong> Node.js/Python microservices in containers</p>
+                <p><strong>Database:</strong> PostgreSQL with read replicas per region</p>
+                <p><strong>Cache:</strong> Redis Cluster for session management</p>
+                <p><strong>Message Queue:</strong> Apache Kafka for real-time features</p>
+                <p><strong>File Storage:</strong> S3 with cross-region replication</p>
+            </div>
+            
+            <div class="tradeoffs">
+                <h4>⚖️ Implementation Strategy:</h4>
+                <p><strong>Phase 1:</strong> Deploy read replicas in target regions</p>
+                <p><strong>Phase 2:</strong> Implement CDN and regional load balancing</p>
+                <p><strong>Phase 3:</strong> Add localization and compliance features</p>
+                <p><strong>Phase 4:</strong> Regional data residency and full autonomy</p>
+            </div>
+        </div>
+        
+        <div class="question-variant">
+            <div class="question-title">Variant 2: American University App International Release</div>
+            <div class="question-text">
+                Some students of an American university built an app and deployed in United States, and now they want to release it internationally. What should be the concerns before doing so and how should they take actions accordingly?
+            </div>
+            
+            <div class="clarifying-questions">
+                <h4>🤔 Clarifying Questions:</h4>
+                <ul>
+                    <li>What type of app - social, academic, or utility?</li>
+                    <li>What's the current user base and server capacity?</li>
+                    <li>Is it monetized? Revenue model?</li>
+                    <li>What countries are targeted first?</li>
+                    <li>What's the budget for international expansion?</li>
+                    <li>Any partnerships with international universities?</li>
+                </ul>
+            </div>
+            
+            <div class="main-issues">
+                <h4>🚨 Pre-Launch Concerns:</h4>
+                <ul>
+                    <li><strong>Legal Compliance:</strong> GDPR, CCPA, data protection laws</li>
+                    <li><strong>Infrastructure Readiness:</strong> Single US server won't scale globally</li>
+                    <li><strong>Cultural Adaptation:</strong> Different education systems and social norms</li>
+                    <li><strong>Monetization:</strong> Different payment methods and currencies</li>
+                    <li><strong>Support & Maintenance:</strong> 24/7 support across timezones</li>
+                    <li><strong>Security:</strong> Enhanced security for global threats</li>
+                </ul>
+            </div>
+            
+            <div class="solutions">
+                <h4>✅ Action Plan:</h4>
+                <ul>
+                    <li><strong>Legal Research:</strong> Hire legal counsel for each target country</li>
+                    <li><strong>Infrastructure Planning:</strong> Multi-region cloud deployment strategy</li>
+                    <li><strong>Localization:</strong> Translate app and adapt to local education systems</li>
+                    <li><strong>Payment Integration:</strong> Local payment gateways (Alipay, PayPal, etc.)</li>
+                    <li><strong>Security Audit:</strong> Penetration testing and compliance audits</li>
+                    <li><strong>Beta Testing:</strong> Pilot launch in 2-3 countries</li>
+                </ul>
+            </div>
+            
+            <div class="requirements">
+                <h4>📋 Technical Requirements:</h4>
+                <p><strong>Functional:</strong></p>
+                <ul>
+                    <li>Multi-language support (UI/UX)</li>
+                    <li>Local payment processing</li>
+                    <li>Timezone-aware features</li>
+                    <li>Regional content moderation</li>
+                </ul>
+                <p><strong>Non-Functional:</strong></p>
+                <ul>
+                    <li><strong>Performance:</strong> <3s app load time globally</li>
+                    <li><strong>Availability:</strong> 99.5% uptime minimum</li>
+                    <li><strong>Scalability:</strong> Handle 10x current traffic</li>
+                    <li><strong>Security:</strong> SOC 2 Type II compliance</li>
+                </ul>
+            </div>
+            
+            <div class="tech-stack">
+                <h4>🛠️ Technical Implementation:</h4>
+                <p><strong>Cloud Provider:</strong> AWS/GCP multi-region deployment</p>
+                <p><strong>CDN:</strong> CloudFlare for global content delivery</p>
+                <p><strong>Database:</strong> Regional read replicas with master-slave setup</p>
+                <p><strong>Monitoring:</strong> DataDog/New Relic for global monitoring</p>
+                <p><strong>Security:</strong> WAF, DDoS protection, encrypted communications</p>
+            </div>
+            
+            <div class="tradeoffs">
+                <h4>⚖️ Risk Mitigation:</h4>
+                <p><strong>Start Small:</strong> Launch in English-speaking countries first</p>
+                <p><strong>Gradual Rollout:</strong> Country-by-country expansion</p>
+                <p><strong>Legal First:</strong> Ensure compliance before technical deployment</p>
+                <p><strong>Monitor & Adapt:</strong> Continuous feedback and iteration</p>
+            </div>
+        </div>
+        
+        <div class="question-variant">
+            <div class="question-title">Variant 3: US to International Expansion</div>
+            <div class="question-text">
+                A social media app is expanding from US to international regions. What are the things to keep in mind?
+            </div>
+            
+            <div class="clarifying-questions">
+                <h4>🤔 Clarifying Questions:</h4>
+                <ul>
+                    <li>What's the current scale - users, requests/second, data volume?</li>
+                    <li>Which regions are prioritized - developed or emerging markets?</li>
+                    <li>What's the content type - text, images, video, or all?</li>
+                    <li>Are there existing partnerships or local presence?</li>
+                    <li>What's the expansion timeline and budget?</li>
+                </ul>
+            </div>
+            
+            <div class="main-issues">
+                <h4>🌍 Key Considerations:</h4>
+                <ul>
+                    <li><strong>Infrastructure:</strong> Latency, bandwidth, server placement</li>
+                    <li><strong>Regulatory:</strong> Data protection, content laws, censorship</li>
+                    <li><strong>Cultural:</strong> Social norms, communication styles, features</li>
+                    <li><strong>Technical:</strong> Device types, network conditions, app store policies</li>
+                    <li><strong>Business:</strong> Monetization, local competition, partnerships</li>
+                </ul>
+            </div>
+            
+            <div class="solutions">
+                <h4>✅ Comprehensive Strategy:</h4>
+                <ul>
+                    <li><strong>Infrastructure Scaling:</strong>
+                        <ul>
+                            <li>Deploy edge servers in target regions</li>
+                            <li>Implement global CDN strategy</li>
+                            <li>Regional database placement</li>
+                        </ul>
+                    </li>
+                    <li><strong>Compliance & Legal:</strong>
+                        <ul>
+                            <li>GDPR compliance for EU</li>
+                            <li>Data residency requirements</li>
+                            <li>Content moderation policies</li>
+                        </ul>
+                    </li>
+                    <li><strong>Localization:</strong>
+                        <ul>
+                            <li>Multi-language support</li>
+                            <li>Cultural adaptation of features</li>
+                            <li>Local payment methods</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="requirements">
+                <h4>📋 System Requirements:</h4>
+                <p><strong>This is a read-heavy system</strong> with high availability needs</p>
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>User feeds and timelines</li>
+                    <li>Real-time messaging</li>
+                    <li>Content sharing and discovery</li>
+                    <li>Notifications and alerts</li>
+                </ul>
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><strong>Latency:</strong> <200ms for feed loading globally</li>
+                    <li><strong>Availability:</strong> 99.99% uptime</li>
+                    <li><strong>Consistency:</strong> Eventual consistency for feeds</li>
+                    <li><strong>Scalability:</strong> Support 100M+ global users</li>
+                </ul>
+            </div>
+            
+            <div class="tech-stack">
+                <h4>🛠️ Global Architecture:</h4>
+                <p><strong>Load Balancing:</strong> GeoDNS routing to regional data centers</p>
+                <p><strong>Application:</strong> Microservices with auto-scaling</p>
+                <p><strong>Database:</strong> Sharded PostgreSQL with regional replicas</p>
+                <p><strong>Cache:</strong> Multi-tier caching (Redis, CDN)</p>
+                <p><strong>Message Queue:</strong> Apache Kafka for real-time features</p>
+                <p><strong>Storage:</strong> S3 with cross-region replication</p>
+            </div>
+            
+            <div class="tradeoffs">
+                <h4>⚖️ Implementation Phases:</h4>
+                <p><strong>Phase 1:</strong> CDN and edge caching deployment</p>
+                <p><strong>Phase 2:</strong> Regional read replicas</p>
+                <p><strong>Phase 3:</strong> Full regional data centers</p>
+                <p><strong>Phase 4:</strong> Local compliance and partnerships</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="leaderboard" class="topic-section">
+        <div class="topic-header">🏆 Leaderboard & Search</div>
+        
+        <div class="question-variant">
+            <div class="question-title">Top 100 Contestants Leaderboard</div>
+            <div class="question-text">
+                Efficient way to find top 100 contestants leaderboard and search contestant's progress by name.
+            </div>
+            
+            <div class="clarifying-questions">
+                <h4>🤔 Clarifying Questions:</h4>
+                <ul>
+                    <li>How many total contestants are there?</li>
+                    <li>How frequently do scores update?</li>
+                    <li>Are there different categories or one global leaderboard?</li>
+                    <li>What's the read vs write ratio?</li>
+                    <li>Do we need real-time updates or near real-time is acceptable?</li>
+                    <li>Are there historical leaderboards (daily, weekly, monthly)?</li>
+                </ul>
+            </div>
+            
+            <div class="main-issues">
+                <h4>🎯 Core Challenges:</h4>
+                <ul>
+                    <li><strong>Performance:</strong> Fast retrieval of top 100 from millions of users</li>
+                    <li><strong>Consistency:</strong> Ensuring leaderboard accuracy with frequent updates</li>
+                    <li><strong>Search Efficiency:</strong> Quick name-based search across large dataset</li>
+                    <li><strong>Scalability:</strong> Handle increasing number of contestants</li>
+                    <li><strong>Real-time Updates:</strong> Show live score changes</li>
+                </ul>
+            </div>
+            
+            <div class="solutions">
+                <h4>✅ Efficient Sample Reasonings:</h4>
+                <ul>
+                    <li><strong>Leaderboard Storage:</strong>
+                        <ul>
+                            <li>Redis Sorted Sets for O(log N) operations</li>
+                            <li>Maintain top 100 in memory cache</li>
+                            <li>Use ZADD for score updates, ZRANGE for top 100</li>
+                        </ul>
+                    </li>
+                    <li><strong>Search Implementation:</strong>
+                        <ul>
+                            <li>Elasticsearch for full-text name search</li>
+                            <li>Trie data structure for autocomplete</li>
+                            <li>Hash index on contestant names</li>
+                        </ul>
+                    </li>
+                    <li><strong>Data Pipeline:</strong>
+                        <ul>
+                            <li>Apache Kafka for real-time score updates</li>
+                            <li>Stream processing for leaderboard updates</li>
+                            <li>Batch processing for historical data</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="requirements">
+                <h4>📋 System Requirements:</h4>
+                <p><strong>This is a read-heavy system</strong> with occasional writes</p>
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Display top 100 contestants</li>
+                    <li>Search contestants by name</li>
+                    <li>Show individual contestant progress</li>
+                    <li>Real-time score updates</li>
+                </ul>
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><strong>Latency:</strong> <50ms for leaderboard, <100ms for search</li>
+                    <li><strong>Throughput:</strong> 10K reads/sec, 1K writes/sec</li>
+                    <li><strong>Availability:</strong> 99.9% uptime</li>
+                    <li><strong>Consistency:</strong> Strong consistency for scores</li>
+                </ul>
+            </div>
+            
+            <div class="tech-stack">
+                <h4>🛠️ Technical Architecture:</h4>
+                <p><strong>Cache Layer:</strong> Redis Cluster with Sorted Sets</p>
+                <p><strong>Database:</strong> PostgreSQL for persistent storage</p>
+                <p><strong>Search Engine:</strong> Elasticsearch for name search</p>
+                <p><strong>Message Queue:</strong> Apache Kafka for real-time updates</p>
+                <p><strong>API Gateway:</strong> Rate limiting and caching</p>
+                <p><strong>Monitoring:</strong> Prometheus for metrics</p>
+            </div>
+            
+            <div class="tradeoffs">
+                <h4>⚖️ Design Decisions:</h4>
+                <p><strong>Redis Sorted Sets:</strong> Chosen for O(log N) complexity and atomic operations</p>
+                <p><strong>Elasticsearch:</strong> Superior search capabilities vs SQL LIKE queries</p>
+                <p><strong>Kafka:</strong> Ensures reliable message delivery for score updates</p>
+                <p><strong>Caching Strategy:</strong> Cache top 100 for 1 minute, invalidate on updates</p>
+            </div>
+        </div>
+    </div>
+    <div id="mobile-media" class="topic-section">
+        <div class="topic-header">📱 Mobile App Media Content</div>
+        
+        <div class="question-variant">
+            <div class="question-title">Variant 1: Puzzle App Media Trade-offs</div>
+            <div class="question-text">
+                A mobile application for playing puzzles has some media content with it - audio, video and images. What are the trade-offs for fetching these media online or storing them offline in the app?
+            </div>
+            
+            <div class="clarifying-questions">
+                <h4>🤔 Clarifying Questions:</h4>
+                <ul>
+                    <li>What's the total size of media content (MB/GB)?</li>
+                    <li>How frequently is media content updated?</li>
+                    <li>What's the target device storage capacity?</li>
+                    <li>Are users primarily on WiFi or cellular?</li>
+                    <li>Is the app used offline frequently?</li>
+                    <li>What's the user retention rate?</li>
+                    <li>Are there different puzzle categories with different media?</li>
+                </ul>
+            </div>
+            
+            <div class="main-issues">
+                <h4>🎯 Main Issues & Analysis:</h4>
+                <p><strong>Core Challenge:</strong> Balancing user experience (fast loading, offline capability) with technical constraints (storage, bandwidth, app size)</p>
+                <p><strong>Key Considerations:</strong> App store size limits, device storage, network reliability, content freshness</p>
+            </div>
+            
+            <div class="solutions">
+                <h4>📱 Offline Storage (Bundled) - Pros:</h4>
+                <ul>
+                    <li><strong>Instant Loading:</strong> No network latency, immediate media access</li>
+                    <li><strong>Offline Capability:</strong> App works without internet connection</li>
+                    <li><strong>Consistent Experience:</strong> No loading delays or failed downloads</li>
+                    <li><strong>Reduced Server Load:</strong> No CDN costs for media delivery</li>
+                    <li><strong>Battery Efficiency:</strong> No network calls for media</li>
+                </ul>
+                
+                <h4>📱 Offline Storage - Cons:</h4>
+                <ul>
+                    <li><strong>Large App Size:</strong> App store download barriers, storage requirements</li>
+                    <li><strong>Update Complexity:</strong> Entire app update needed for media changes</li>
+                    <li><strong>Device Storage:</strong> Consumes user device storage permanently</li>
+                    <li><strong>Initial Download Time:</strong> Longer first-time installation</li>
+                    <li><strong>Version Management:</strong> Difficult to A/B test media content</li>
+                </ul>
+                
+                <h4>🌐 Online Fetching - Pros:</h4>
+                <ul>
+                    <li><strong>Smaller App Size:</strong> Faster downloads, lower storage requirements</li>
+                    <li><strong>Dynamic Content:</strong> Easy to update, personalize, and A/B test</li>
+                    <li><strong>Scalable Storage:</strong> Unlimited content without app size constraints</li>
+                    <li><strong>Analytics:</strong> Track media usage patterns and preferences</li>
+                    <li><strong>Personalization:</strong> Serve relevant media based on user behavior</li>
+                </ul>
+                
+                <h4>🌐 Online Fetching - Cons:</h4>
+                <ul>
+                    <li><strong>Network Dependency:</strong> Requires internet connection</li>
+                    <li><strong>Loading Delays:</strong> Network latency affects user experience</li>
+                    <li><strong>Bandwidth Costs:</strong> Data usage for users, CDN costs for company</li>
+                    <li><strong>Inconsistent Performance:</strong> Depends on network quality</li>
+                    <li><strong>Battery Drain:</strong> Network operations consume more battery</li>
+                </ul>
+            </div>
+            
+            <div class="requirements">
+                <h4>📋 Requirements Analysis:</h4>
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Display high-quality images, videos, and audio</li>
+                    <li>Support offline puzzle gameplay</li>
+                    <li>Handle media updates and new content</li>
+                    <li>Maintain consistent user experience</li>
+                </ul>
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><strong>Performance:</strong> <2s loading time for media</li>
+                    <li><strong>Availability:</strong> 99.9% uptime for online content</li>
+                    <li><strong>Scalability:</strong> Handle 1M+ concurrent users</li>
+                    <li><strong>Storage:</strong> <100MB app size preferred</li>
+                    <li><strong>Bandwidth:</strong> Optimize for 3G/4G networks</li>
+                </ul>
+            </div>
+            
+            <div class="tech-stack">
+                <h4>🛠️ Hybrid Approach - Best of Both Worlds:</h4>
+                <p><strong>Core Assets Offline:</strong> Essential UI elements, basic sounds, loading screens</p>
+                <p><strong>Dynamic Content Online:</strong> Puzzle-specific media, seasonal content</p>
+                <p><strong>Intelligent Caching:</strong> Cache frequently accessed media locally</p>
+                <p><strong>Progressive Loading:</strong> Load media as needed, not all at once</p>
+                <p><strong>Compression:</strong> WebP for images, compressed audio formats</p>
+            </div>
+            
+            <div class="tradeoffs">
+                <h4>⚖️ Recommended Hybrid Strategy:</h4>
+                <p><strong>Implementation Plan:</strong></p>
+                <ul>
+                    <li><strong>Critical Assets Offline:</strong> Core UI, essential sounds (<20MB)</li>
+                    <li><strong>Lazy Loading:</strong> Download puzzle media when accessed</li>
+                    <li><strong>Smart Caching:</strong> Cache user's favorite puzzle categories</li>
+                    <li><strong>Offline Graceful Degradation:</strong> Basic functionality without media</li>
+                    <li><strong>CDN with Edge Caching:</strong> CloudFront for fast global delivery</li>
+                    <li><strong>Progressive Enhancement:</strong> Better experience with good connectivity</li>
+                </ul>
+                <p><strong>This approach provides fast initial loading while maintaining flexibility for content updates.</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="ml-scaling" class="topic-section">
+        <div class="topic-header">🤖 ML Service Scaling</div>
+        
+        <div class="question-variant">
+            <div class="question-title">Variant 1: Sports News ML Service</div>
+            <div class="question-text">
+                An ML based service exists for sports news app. What are the things to keep in mind when evaluating the scaling needs for the service for the next one year?
+            </div>
+            
+            <div class="clarifying-questions">
+                <h4>🤔 Clarifying Questions:</h4>
+                <ul>
+                    <li>What ML tasks does the service perform (recommendation, classification, NLP)?</li>
+                    <li>What's the current traffic pattern - real-time or batch processing?</li>
+                    <li>How computationally intensive are the ML models?</li>
+                    <li>What's the expected user growth rate?</li>
+                    <li>Are there seasonal patterns (sports seasons, major events)?</li>
+                    <li>What's the current infrastructure (CPU, GPU, cloud)?</li>
+                    <li>How frequently are models retrained?</li>
+                    <li>What's the latency requirement for predictions?</li>
+                </ul>
+            </div>
+            
+            <div class="main-issues">
+                <h4>🎯 Main Issues & Analysis:</h4>
+                <p><strong>Core Challenge:</strong> ML workloads are computationally expensive and have unpredictable scaling patterns</p>
+                <p><strong>Key Considerations:</strong> Model inference latency, training scalability, seasonal traffic spikes, cost optimization</p>
+            </div>
+            
+            <div class="solutions">
+                <h4>📊 Scaling Factors to Consider:</h4>
+                
+                <h4>🚀 Traffic & User Growth:</h4>
+                <ul>
+                    <li><strong>User Base Expansion:</strong> Estimate 2-5x growth in active users</li>
+                    <li><strong>Geographic Expansion:</strong> New markets mean different sports, languages</li>
+                    <li><strong>Feature Expansion:</strong> New ML features increase compute requirements</li>
+                    <li><strong>Real-time vs Batch:</strong> Shift towards real-time personalization</li>
+                </ul>
+                
+                <h4>⚡ Performance Requirements:</h4>
+                <ul>
+                    <li><strong>Latency:</strong> <100ms for real-time recommendations</li>
+                    <li><strong>Throughput:</strong> Handle 10K+ predictions per second</li>
+                    <li><strong>Availability:</strong> 99.95% uptime during peak sports events</li>
+                    <li><strong>Model Accuracy:</strong> Maintain quality while scaling</li>
+                </ul>
+                
+                <h4>📈 Seasonal & Event-Based Scaling:</h4>
+                <ul>
+                    <li><strong>Sports Seasons:</strong> 10x traffic during major tournaments</li>
+                    <li><strong>Breaking News:</strong> Sudden spikes during major events</li>
+                    <li><strong>Time Zones:</strong> Global events create rolling traffic waves</li>
+                    <li><strong>Weekend Patterns:</strong> Higher engagement during games</li>
+                </ul>
+            </div>
+            
+            <div class="requirements">
+                <h4>📋 ML Service Requirements:</h4>
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Personalized sports news recommendations</li>
+                    <li>Real-time content classification and tagging</li>
+                    <li>Sentiment analysis for articles and comments</li>
+                    <li>Trending topic detection</li>
+                    <li>User engagement prediction</li>
+                </ul>
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><strong>Scalability:</strong> Auto-scale from 1K to 100K+ requests/sec</li>
+                    <li><strong>Latency:</strong> <100ms P95 for inference</li>
+                    <li><strong>Availability:</strong> 99.95% uptime</li>
+                    <li><strong>Cost Efficiency:</strong> Optimize compute costs per prediction</li>
+                    <li><strong>Model Freshness:</strong> Daily model updates</li>
+                </ul>
+            </div>
+            
+            <div class="tech-stack">
+                <h4>🛠️ Scalable ML Architecture:</h4>
+                <p><strong>Model Serving:</strong> Kubernetes with HPA, TensorFlow Serving</p>
+                <p><strong>Load Balancing:</strong> NGINX with health checks and circuit breakers</p>
+                <p><strong>Caching:</strong> Redis for frequently requested predictions</p>
+                <p><strong>GPU Infrastructure:</strong> AWS EC2 P4/G4 instances for training</p>
+                <p><strong>Auto-scaling:</strong> KEDA for event-driven scaling</p>
+                <p><strong>Monitoring:</strong> Prometheus + Grafana for model performance</p>
+                <p><strong>Feature Store:</strong> Feast for consistent feature serving</p>
+            </div>
+            
+            <div class="solutions">
+                <h4>🏗️ Scaling Strategies:</h4>
+                
+                <h4>1. Horizontal Scaling:</h4>
+                <ul>
+                    <li><strong>Model Replicas:</strong> Deploy multiple model instances</li>
+                    <li><strong>Load Balancing:</strong> Distribute requests across replicas</li>
+                    <li><strong>Auto-scaling:</strong> Scale based on CPU, memory, and queue depth</li>
+                </ul>
+                
+                <h4>2. Model Optimization:</h4>
+                <ul>
+                    <li><strong>Model Quantization:</strong> Reduce model size and inference time</li>
+                    <li><strong>Model Pruning:</strong> Remove unnecessary parameters</li>
+                    <li><strong>Ensemble Optimization:</strong> Use lighter models for real-time, heavy for batch</li>
+                </ul>
+                
+                <h4>3. Caching & Preprocessing:</h4>
+                <ul>
+                    <li><strong>Result Caching:</strong> Cache common predictions</li>
+                    <li><strong>Feature Caching:</strong> Precompute expensive features</li>
+                    <li><strong>Batch Processing:</strong> Process similar requests together</li>
+                </ul>
+            </div>
+            
+            <div class="tradeoffs">
+                <h4>⚖️ Scaling Plan for Next Year:</h4>
+                <p><strong>Phase 1 (0-3 months):</strong></p>
+                <ul>
+                    <li>Implement horizontal auto-scaling with Kubernetes</li>
+                    <li>Add Redis caching for frequent predictions</li>
+                    <li>Set up comprehensive monitoring and alerting</li>
+                </ul>
+                <p><strong>Phase 2 (3-6 months):</strong></p>
+                <ul>
+                    <li>Model optimization and quantization</li>
+                    <li>Implement feature store for consistency</li>
+                    <li>Add GPU-based training pipeline</li>
+                </ul>
+                <p><strong>Phase 3 (6-12 months):</strong></p>
+                <ul>
+                    <li>Multi-region deployment for global scaling</li>
+                    <li>Advanced caching strategies</li>
+                    <li>Cost optimization and right-sizing</li>
+                </ul>
+                <p><strong>Budget 3-5x current infrastructure costs to handle projected growth.</strong></p>
+            </div>
+        </div>
+    </div>
+    <div id="server-capacity" class="topic-section">
+        <div class="topic-header">🖥️ Server Capacity Planning</div>
+        
+        <div class="question-variant">
+            <div class="question-title">Variant 1: Storage Size & CPU Load Calculation</div>
+            <div class="question-text">
+                Some inputs/numbers are given. Based on storage size and CPU/query load calculate how many servers do we need in both cases.
+            </div>
+            
+            <div class="clarifying-questions">
+                <h4>🤔 Clarifying Questions:</h4>
+                <ul>
+                    <li>What are the specific input numbers provided?</li>
+                    <li>What's the expected query rate (QPS)?</li>
+                    <li>What's the total storage requirement?</li>
+                    <li>What's the per-server storage capacity?</li>
+                    <li>What's the CPU utilization per query?</li>
+                    <li>What's the target CPU utilization threshold?</li>
+                    <li>Do we need replication for high availability?</li>
+                    <li>Are there read vs write workload differences?</li>
+                </ul>
+            </div>
+            
+            <div class="main-issues">
+                <h4>🎯 Main Issues & Analysis:</h4>
+                <p><strong>Core Challenge:</strong> Right-sizing infrastructure to handle both storage and compute requirements efficiently</p>
+                <p><strong>Key Considerations:</strong> Storage vs compute bottlenecks, replication overhead, peak vs average load</p>
+            </div>
+            
+            <div class="solutions">
+                <h4>📊 Capacity Planning Framework:</h4>
+                
+                <h4>💾 Storage-Based Calculation:</h4>
+                <p><strong>Formula:</strong> Number of servers = (Total Storage Required + Replication Factor) / (Usable Storage per Server)</p>
+                <p><strong>Example Calculation:</strong></p>
+                <ul>
+                    <li>Total Storage Required: 10TB</li>
+                    <li>Replication Factor: 3 (for high availability)</li>
+                    <li>Server Storage: 2TB SSD (80% usable = 1.6TB)</li>
+                    <li>Servers Needed: (10TB × 3) / 1.6TB = 19 servers</li>
+                </ul>
+                
+                <h4>⚡ CPU/Query Load Calculation:</h4>
+                <p><strong>Formula:</strong> Number of servers = (Peak QPS × CPU per Query) / (CPU Cores × Target Utilization)</p>
+                <p><strong>Example Calculation:</strong></p>
+                <ul>
+                    <li>Peak QPS: 100,000 queries/second</li>
+                    <li>CPU per Query: 10ms of CPU time</li>
+                    <li>Server Specs: 16 cores, 2.5GHz</li>
+                    <li>Target Utilization: 70%</li>
+                    <li>Servers Needed: (100,000 × 0.01s) / (16 × 0.7) = 89 servers</li>
+                </ul>
+            </div>
+            
+            <div class="requirements">
+                <h4>📋 System Requirements:</h4>
+                <p><strong>Functional Requirements:</strong></p>
+                <ul>
+                    <li>Handle specified query load with acceptable latency</li>
+                    <li>Store required data with durability guarantees</li>
+                    <li>Provide high availability and fault tolerance</li>
+                    <li>Support expected growth patterns</li>
+                </ul>
+                <p><strong>Non-Functional Requirements:</strong></p>
+                <ul>
+                    <li><strong>Performance:</strong> <100ms P95 latency</li>
+                    <li><strong>Availability:</strong> 99.9% uptime</li>
+                    <li><strong>Scalability:</strong> Handle 2x growth without redesign</li>
+                    <li><strong>Cost:</strong> Optimize for cost per query/GB</li>
+                </ul>
+            </div>
+            
+            <div class="tech-stack">
+                <h4>🛠️ Capacity Planning Tools & Approach:</h4>
+                <p><strong>Monitoring:</strong> Prometheus + Grafana for resource utilization</p>
+                <p><strong>Load Testing:</strong> JMeter/K6 for performance benchmarking</p>
+                <p><strong>Capacity Modeling:</strong> Excel/Python for growth projections</p>
+                <p><strong>Auto-scaling:</strong> AWS Auto Scaling Groups, Kubernetes HPA</p>
+                <p><strong>Cost Optimization:</strong> Reserved instances, spot instances for batch jobs</p>
+            </div>
+            
+            <div class="solutions">
+                <h4>🏗️ Detailed Calculation Steps:</h4>
+                
+                <h4>Step 1: Gather Requirements</h4>
+                <ul>
+                    <li>Peak QPS and average QPS</li>
+                    <li>Storage requirements (current and projected)</li>
+                    <li>Latency requirements (P95, P99)</li>
+                    <li>Availability requirements</li>
+                    <li>Budget constraints</li>
+                </ul>
+                
+                <h4>Step 2: Server Specifications</h4>
+                <ul>
+                    <li>CPU: Cores, clock speed, architecture</li>
+                    <li>Memory: RAM size, type (DDR4/DDR5)</li>
+                    <li>Storage: SSD/HDD, capacity, IOPS</li>
+                    <li>Network: Bandwidth, latency</li>
+                </ul>
+                
+                <h4>Step 3: Workload Analysis</h4>
+                <ul>
+                    <li>CPU utilization per query type</li>
+                    <li>Memory usage patterns</li>
+                    <li>I/O patterns (read/write ratio)</li>
+                    <li>Network bandwidth requirements</li>
+                </ul>
+                
+                <h4>Step 4: Safety Margins</h4>
+                <ul>
+                    <li>Peak load multiplier: 2-3x average</li>
+                    <li>Growth buffer: 50-100% for next year</li>
+                    <li>Failure tolerance: N+1 or N+2 redundancy</li>
+                    <li>Maintenance windows: 10-15% overhead</li>
+                </ul>
+            </div>
+            
+            <div class="tradeoffs">
+                <h4>⚖️ Final Recommendation:</h4>
+                <p><strong>Choose the Higher Number:</strong> Take the maximum of storage-based and CPU-based calculations</p>
+                <p><strong>Example Final Calculation:</strong></p>
+                <ul>
+                    <li>Storage-based: 19 servers</li>
+                    <li>CPU-based: 89 servers</li>
+                    <li>Choose: 89 servers (CPU is the bottleneck)</li>
+                    <li>Add growth buffer: 89 × 1.5 = 134 servers</li>
+                    <li>Add redundancy: 134 × 1.1 = 147 servers</li>
+                </ul>
+             </div>   
+            </div> 
+            </div>
+    </div>    
+<!-- Continuation from system_design_solutions_2.html -->
+<!-- ... rest of the code ... -->
+</body>
+</html>
